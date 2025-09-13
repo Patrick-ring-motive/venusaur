@@ -1,12 +1,13 @@
 const elements = [...document.getElementsByTagName('*')];
 for(const el of elements){
-  if(String(el.getAttribute('class')).includes('GoogleCreativeContainerClass') || /frame/i.test(el.tagName)){
+  const classes = String(el.getAttribute('class'))
+  if( classes.includes('GoogleCreativeContainerClass') || classes.includes('adthrive-ad') || /frame/i.test(el.tagName)){
     el.remove();
   }
 }
 
 setInterval(()=>{
-  const elements = [...document.querySelectorAll('.GoogleCreativeContainerClass,iframe,frame')];
+  const elements = [...document.querySelectorAll('.adthrive-ad,.GoogleCreativeContainerClass,iframe,frame')];
   for(const el of elements){
     el.remove();
   }
