@@ -11,7 +11,7 @@ for(const el of elements){
 }
 
 setInterval(()=>{
-  const elements = [...document.querySelectorAll('[class*="adthrive-ad"],.GoogleCreativeContainerClass,iframe,frame,[src*="ads.adthrive"],.google-ad-manager-fallback-container')];
+  const elements = [...document.querySelectorAll('div[class*="adthrive"],[class*="adthrive-ad"],.GoogleCreativeContainerClass,iframe,frame,[src*="ads.adthrive"],.google-ad-manager-fallback-container')];
   for(const el of elements){
     el.remove();
   }
