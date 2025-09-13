@@ -4,7 +4,7 @@ for(const el of elements){
   if(classes.includes('GoogleCreativeContainerClass')
      || classes.includes('adthrive-ad')
      || /frame/i.test(el.tagName)
-     || String(el.src).incudes('ads.adthrive')){
+     || String(el.src).includes('ads.adthrive')){
     el.remove();
   }
 }
