@@ -38,7 +38,7 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 
 const gzip = body => new Response(body).body.pipeThrough(new CompressionStream("gzip"));
 export default {
-  async fetch(request) {
+  async onRequest(request) {
 	init();
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
