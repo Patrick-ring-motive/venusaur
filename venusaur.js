@@ -58,10 +58,7 @@ export async function onRequest(request) {
 		let resBody = await response.text();
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<style>html{filter: hue-rotate(45deg);  img:not([src*="header_img"]){filter:hue-rotate(-45deg);}}</style>
-			${resBody}
-			<script>
-			</script>`
+			resBody = `<script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${new Date().getTime()}"></script>${resBody}`;
 		}
 		setCacheHeaders(responseInit.headers,3);
 		response = new Response(resBody,responseInit);
