@@ -58,16 +58,10 @@ export async function onRequest(request) {
     if(/text|html|script|xml|json/i.test(response.headers.get('content-type'))){
 		let resBody = await response.text();
 		resBody = resBody.replace(targetHostRe,thisHost);
-		if(/html/i.test(response.headers.get('content-type')) && !request.url.includes('convlist.php') && !request.url.includes('ajax')){
+		if(/html/i.test(response.headers.get('content-type'))){
 			resBody = `<style>html{filter: hue-rotate(45deg);  img:not([src*="header_img"]){filter:hue-rotate(-45deg);}}</style>
 			${resBody}
 			<script>
-			setInterval(()=>{
-				const imgs = [...document.querySelectorAll('img[src*="upload.cheese-taupe.pokeheroes.workers.dev"]')];
-				for(const img of imgs){
-					img.src = img.src.replace("upload.cheese-taupe.pokeheroes.workers.dev","upload.pokeheroes.com");
-				}
-			},100);
 			</script>`
 		}
 		setCacheHeaders(responseInit.headers,3);
