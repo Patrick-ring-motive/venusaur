@@ -37,8 +37,7 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 };
 
 const gzip = body => new Response(body).body.pipeThrough(new CompressionStream("gzip"));
-export default {
-  async onRequest(request) {
+export async function onRequest(request) {
 	init();
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
@@ -82,5 +81,4 @@ export default {
 		response = new Response(response.body,responseInit);
 	}
     return response;
-  },
-};
+  };
