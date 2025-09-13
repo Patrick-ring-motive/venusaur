@@ -36,7 +36,6 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 	return newHeaders;
 };
 
-const gzip = body => new Response(body).body.pipeThrough(new CompressionStream("gzip"));
 export async function onRequest(request) {
 	init();
 	const thisHost = `${request.headers.get('host')}`;
@@ -65,10 +64,6 @@ export async function onRequest(request) {
 			</script>`
 		}
 		setCacheHeaders(responseInit.headers,3);
-		if(!responseInit.headers.get('transfer-encoding')){
-			responseInit.headers.set('content-encoding','gzip');
-			resBody = gzip(resBody);
-		}
 		response = new Response(resBody,responseInit);
 	}else{
 		setCacheHeaders(responseInit.headers);
