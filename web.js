@@ -1,3 +1,21 @@
+(()=>{
+    const $fetch = globalThis.fetch;
+    globalThis.fetch = Object.setPrototypeOf(async function fetch(...args){
+      try{
+        if(args.some(arg=>String(arg.url??arg).includes('adthrive'))){
+          return new Promise(()=>{});
+        }
+        return await $fetch(...args);
+      }catch(e){
+        console.warn(e,...arguments);
+        return new Response(Object.getOwnPropertyNames(e??{}).map(x=>`${x} : ${e[x]}`).join(''),{
+          status : 569,
+          statusText:e?.message
+        });
+      }
+    },$fetch);
+})();
+
 const elements = [...document.getElementsByTagName('*')];
 for(const el of elements){
   const classes = String(el.getAttribute('class'));
