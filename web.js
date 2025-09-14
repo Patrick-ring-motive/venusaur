@@ -112,7 +112,7 @@
     Q(()=>Element.prototype.remove.apply(x));
     Q(()=>x.parentElement.removeChild(x));
   };
-const elements = [...document.getElementsByTagName('*'),...document.firstElementChild.children];
+const elements = [...document.getElementsByTagName('*'),...document.firstElementChild?.children??[]];
 for(const el of elements){
   const classes = String(el?.getAttribute?.('class'));
   if(classes.includes('GoogleCreativeContainerClass')
