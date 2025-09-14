@@ -49,7 +49,7 @@ export async function onRequest(request) {
 	    webScript = fetchText(`${webScriptURL}?${new Date().getTime()}`);
 	}
 	if(isPromise(webScript)){
-		webScript = await workerScript;
+		webScript = await webScript;
 	}
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
