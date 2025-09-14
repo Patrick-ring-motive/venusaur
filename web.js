@@ -28,6 +28,7 @@
           xhr.prototype.open = Object.setPrototypeOf(function open(...args) {
             // store input args in closure map
             _openArgs.set(this, args);
+            args[1] &&= String(args[1]).replace(/bulbapedia.bulbagarden.net/i,location.host);
             return _open.apply(this, args);
           }, _open);
         })();
