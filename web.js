@@ -97,39 +97,171 @@
 })();
 
 (()=>{
-  const selectors = 'video,div[class*="adthrive"],[class*="adthrive-ad"],.GoogleCreativeContainerClass,iframe,frame,object,embed,[src*="ads.adthrive"],.google-ad-manager-fallback-container';
-  const style = document.createElement(selectors);
-  style.innerText = `${selectors}{
-    display:none !important;
-    visibility:hidden !important;
-    opacity:0 !important;
-  }`;
-  document.firstElementChild.appendChild(style);
-  const Q = fn =>{
-   try{return fn?.()}catch{}
-  };
-  const remove = x =>{
-   /* Q(()=>Element.prototype.remove.apply(x));
-    Q(()=>x.parentElement.removeChild(x));*/
-  };
-const elements = [...document.getElementsByTagName('*'),...document.firstElementChild?.children??[]];
-for(const el of elements){
-  const classes = String(el?.getAttribute?.('class'));
-  if(classes.includes('GoogleCreativeContainerClass')
-     || classes.includes('adthrive-ad')
-     || classes.includes('google-ad')
-     || /frame|iframe/i.test(el?.tagName)
-     || String(el?.src).includes('ads.adthrive')){
-    remove(el);
-  }
-}
+  // ==UserScript==
+// @name         bipitty
+// @namespace    https://staybrowser.com/
+// @version      0.1
+// @description  Template userscript created by Stay
+// @author       You
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
 
-setInterval(()=>{
-  const elements = [...document.querySelectorAll(selectors)];
-  for(const el of elements){
-    remove(el);
-  }
-},300);
+(()=>{
+
+if(location.href.includes('venu.lenguapedia'))return;
+
+if(location.href.includes("readnaruto")){
+  try{
+  window.confirm =()=>{};
+  }catch{}
+}
+(()=>{
+const selectors = `:not([location-host*="amazon"i]) [src*="amazon"i],
+:not([location-host*="amazon"i]) [href*="amazon"i],
+[location-host*="fandom"i] :is(video,iframe),
+[location-href*="lenguapedia"i] iframe,
+[location-href*="lengapedia"i] object,
+[location-href*="lengapedia"i] video,
+[src*="ad.doubleclick"],
+[href*="ad.doubleclick"]`;
+(()=>{
+const px = 0.5;
+const style = document.createElement('style');
+style.innerHTML = `
+${selectors}{
+  visibility:hidden !important;
+  display:none !important;
+}
+html{
+--filter:invert(1) !important;
+a{
+--color:green !important;
+}
+counter{
+ z-index:9999;
+ text-shadow:  -${px}px -${px}px 0 #F0F8FF, ${px}px -${px}px 0 #F0F8FF, -${px}px ${px}px 0 #F0F8FF, ${px}px ${px}px 0 #F0F8FF;
+ ---webkit-text-stroke-width: 1px;
+ ---webkit-text-stroke-color: #F0F8FF;
+}
+`;
+document.firstElementChild.appendChild(style);
+
+})();
+
+
+
+    const setBackgroundInterval = function setBackgroundInterval(fn, time) {
+        const requestIdleCallback =
+            globalThis.requestIdleCallback ?? globalThis.requestAnimationFrame;
+        let running = false;
+        return setInterval(() => {
+            if (running) return;
+            running = true;
+            requestIdleCallback(async () => {
+                try {
+                    await fn();
+                } catch (e) {
+                    console.warn(e);
+                } finally {
+                    running = false;
+                }
+            });
+        }, time);
+    };
+
+    const updateAttribute = (element, key, value) => (element?.getAttribute?.(key) != value) && element?.setAttribute?.(key, value);
+
+    (() => {
+        function cssHelpers() {
+            const html = document.querySelector('html,HTML')||document.firstElementChild;
+            
+            const toKebabCase = x =>
+                String(x).replace(/[A-Z]+/g, y => `-${y.toLowerCase()}`).replace(/[^a-z0-9-]/g, '').replace(/[-]+/g, '-').replace(/^-/, '');
+
+            const isString = str => str instanceof String || [typeof str, str?.constructor?.name].some(s => /^string$/i.test(s));
+
+            for (const obj of [document, window, location, navigator, window.clientInformation?.userAgentData]) {
+                const prefix = `${obj?.constructor?.name}`.replace(/^html/i, '').toLowerCase();
+                for (const prop in obj) {
+                    if (obj[prop] != null && String(obj[prop]).length && !/function|object/.test(obj[prop])) {
+                      try{
+                        updateAttribute(html, `${toKebabCase(prefix)}-${toKebabCase(prop)}`.replace(/[-]+/g, '-'), obj[prop]);
+                      }catch(e){
+                        console.log(obj,prop,e);
+                      }
+                    }
+                }
+            }
+           // alert(html.getAttribute('location-href'));
+            const loc = new URL(location.href);
+            for (const [k, v] of loc.searchParams) {
+                if (k && v) {
+                    updateAttribute(html, `location-search-params-${toKebabCase(k)}`.replace(/[-]+/g, '-'), v);
+                }
+            }
+
+            const cookies = new URLSearchParams(`?${`${document?.cookie}`.split('; ').join('&')}`);
+            for (const [k, v] of cookies) {
+                if (k && v) {
+                    updateAttribute(html, `cookie-${toKebabCase(k)}`.replace(/[-]+/g, '-'), v);
+                }
+            }
+            html.setAttribute('window-top', window == window.top);
+        }
+        cssHelpers();
+       // setBackgroundInterval(cssHelpers,100);
+    })();
+
+    (() => {
+        globalThis.requestIdleCallback ??= requestAnimationFrame;
+
+        const DOMInteractive = (fn) => {
+            fn ??= () => {};
+            if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
+                return fn();
+            }
+            return new Promise((resolve) => {
+                (globalThis.document || globalThis).addEventListener("DOMContentLoaded", () => {
+                    try {
+                        resolve(fn());
+                    } catch (e) {
+                        resolve(e);
+                    }
+                });
+            });
+        };
+
+    })();
+
+  
+const counter = document.createElement('counter');
+Object.assign(counter.style,{
+  position:'fixed',
+  left:0,
+  top:0,
+  color:'blue',
+ 
+});
+  counter.textContent = 0;
+  
+  setBackgroundInterval(()=>{
+    const num = document.querySelectorAll(selectors)?.length;
+    if(parseInt(counter.textContent) < num){
+       counter.textContent = num;
+    }
+  });
+  document.firstElementChild.appendChild(counter);
+})();
+
+
+})();
+
+
+
+
+
+
 })();
 })();
 
