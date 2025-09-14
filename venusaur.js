@@ -1,5 +1,10 @@
 const targetHost = 'bulbapedia.bulbagarden.net';
 const targetHostRe = new RegExp(targetHost,'gi');
+const webScriptURL = "https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js";
+const fetchText = async function fetchText(...args){
+	const resp = await fetch(...args);
+	return resp.text();
+};
 let time = new Date().getTime();
 let started = false;
 const init = ()=>{
@@ -35,9 +40,17 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 	}
 	return newHeaders;
 };
+const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
+let workerScript;
 
 export async function onRequest(request) {
 	init();
+	if(!workerScript){
+	    workerScript = fetchText(`${workerScriptURL}?${new Date().getTime()}`);
+	}
+	if(isPromise(workerScript)){
+		workerScript = await workerScript;
+	}
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
 	const requestInit = {
@@ -58,7 +71,7 @@ export async function onRequest(request) {
 		let resBody = await response.text();
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${new Date().getTime()}"></script>
+			resBody = `<script src="?${new Date().getTime()}"></script>
                        ${resBody}
 					   <script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${Math.random()}"></script>`;
 		}
