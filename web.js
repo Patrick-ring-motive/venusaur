@@ -86,6 +86,9 @@
         if(args.some(arg=>String(arg.url??arg).includes('adthrive'))){
           return new Promise(()=>{});
         }
+        if(!args?.[0]?.url){
+          args[0] &&= String(args[0]).replace(/bulbapedia.bulbagarden.net/i,location.host);
+        }
         return await $fetch(...args);
       }catch(e){
         console.warn(e,...arguments);
