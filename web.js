@@ -1,4 +1,4 @@
-
+(()=>{
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
@@ -96,6 +96,22 @@
     },$fetch);
 })();
 
+(()=>{
+  const selectors = 'video,div[class*="adthrive"],[class*="adthrive-ad"],.GoogleCreativeContainerClass,iframe,frame,object,embed,[src*="ads.adthrive"],.google-ad-manager-fallback-container';
+  const style = document.createElement(selectors);
+  style.innerText = `${selectors}{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+  }`;
+  document.firstElementChild.appendChild(style);
+  const Q = fn =>{
+    try{return fn?.()}catch{}
+  };
+  const remove = x =>{
+    Q(()=>Element.prototype.remove.apply(x));
+    Q(()=>x.parentElement.removeChild(x));
+  };
 const elements = [...document.getElementsByTagName('*'),...document.firstElementChild.children];
 for(const el of elements){
   const classes = String(el?.getAttribute?.('class'));
@@ -104,13 +120,18 @@ for(const el of elements){
      || classes.includes('google-ad')
      || /frame|iframe/i.test(el?.tagName)
      || String(el?.src).includes('ads.adthrive')){
-    el?.remove?.();
+    remove(el);
   }
 }
 
-setInterval(()=>{
-  const elements = [...document.querySelectorAll('video,div[class*="adthrive"],[class*="adthrive-ad"],.GoogleCreativeContainerClass,iframe,frame,object,embed,[src*="ads.adthrive"],.google-ad-manager-fallback-container')];
+setInterval(()=>{d
+  const elements = [...document.querySelectorAll(selectors)];
   for(const el of elements){
-    el?..remove?.();
+    remove(el);
   }
 },300);
+})();
+})();
+
+
+ 
