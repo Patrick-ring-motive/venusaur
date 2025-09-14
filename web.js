@@ -109,13 +109,6 @@
 
 (()=>{
 
-if(location.href.includes('venu.lenguapedia'))return;
-
-if(location.href.includes("readnaruto")){
-  try{
-  window.confirm =()=>{};
-  }catch{}
-}
 (()=>{
 const selectors = `:not([location-host*="amazon"i]) [src*="amazon"i],
 :not([location-host*="amazon"i]) [href*="amazon"i],
