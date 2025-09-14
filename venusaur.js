@@ -58,7 +58,9 @@ export async function onRequest(request) {
 		let resBody = await response.text();
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${new Date().getTime()}"></script>${resBody}`;
+			resBody = `<script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${new Date().getTime()}"></script>
+                       ${resBody}
+					   <script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${Math.random()}"></script>`;
 		}
 		setCacheHeaders(responseInit.headers,3);
 		response = new Response(resBody,responseInit);
