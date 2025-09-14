@@ -124,7 +124,7 @@ for(const el of elements){
   }
 }
 
-setInterval(()=>{d
+setInterval(()=>{
   const elements = [...document.querySelectorAll(selectors)];
   for(const el of elements){
     remove(el);
