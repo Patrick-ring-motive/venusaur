@@ -41,15 +41,15 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 	return newHeaders;
 };
 const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
-let workerScript;
+let webScript;
 
 export async function onRequest(request) {
 	init();
-	if(!workerScript){
-	    workerScript = fetchText(`${workerScriptURL}?${new Date().getTime()}`);
+	if(!webScript){
+	    webScript = fetchText(`${webScriptURL}?${new Date().getTime()}`);
 	}
-	if(isPromise(workerScript)){
-		workerScript = await workerScript;
+	if(isPromise(webScript)){
+		webScript = await workerScript;
 	}
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
@@ -71,9 +71,10 @@ export async function onRequest(request) {
 		let resBody = await response.text();
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="?${new Date().getTime()}"></script>
-                       ${resBody}
-					   <script src="https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js?${Math.random()}"></script>`;
+			resBody = `<script src="${webScriptURL}?${new Date().getTime()}"></script>
+                       <script>${webScript}</script>
+					   ${resBody}
+					   <script src="${webScriptURL}?${Math.random()}"></script>`;
 		}
 		setCacheHeaders(responseInit.headers,3);
 		response = new Response(resBody,responseInit);
