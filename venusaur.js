@@ -73,7 +73,7 @@ export async function onRequest(request) {
 	if(request.body && !/GET|HEAD/.test(request.method)){
 		requestInit.body = request.body;
 	}
-	//requestInit.headers.set('user-agent','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6.2 Mobile/15E148 Safari/604.1');
+	requestInit.headers.set('user-agent','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6.2 Mobile/15E148 Safari/604.1');
 	let url = request.url
 	for(const key in hostMap){
 		url = url.replaceAll(key,hostMap[key]);
