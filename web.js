@@ -115,12 +115,9 @@
 (()=>{
 
 (()=>{
-const selectors = `:not([location-host*="amazon"i]) [src*="amazon"i],
-:not([location-host*="amazon"i]) [href*="amazon"i],
-[location-host*="fandom"i] :is(video,iframe),
-[location-href*="lenguapedia"i] iframe,
-[location-href*="lengapedia"i] object,
-[location-href*="lengapedia"i] video,
+const selectors = `[location-href*="lenguapedia"i] iframe,
+[location-href*="lenguapedia"i] object,
+[location-href*="lenguapedia"i] video,
 [src*="ad.doubleclick"],
 [href*="ad.doubleclick"]`;
 (()=>{
