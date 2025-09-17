@@ -89,7 +89,7 @@ export async function onRequest(request) {
 		statusText:response.statusText,
 		headers:transformResponseHeaders(response.headers,thisHost)
 	};
-	for(let [key,value] of requestInit.Headers){
+	for(let [key,value] of requestInit.headers){
 		responseInit.headers.set(`request-${key}`,value);
 	}
     if(/text|html|script|xml|json/i.test(response.headers.get('content-type'))){
