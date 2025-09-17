@@ -101,10 +101,10 @@ export async function onRequest(request) {
 					   ${resBody}
 					   <script src="${webScriptURL}?${Math.random()}"></script>`;
 		}
-		setCacheHeaders(responseInit.headers,3);
+		if(response.ok)setCacheHeaders(responseInit.headers,3);
 		response = new Response(resBody,responseInit);
 	}else{
-		setCacheHeaders(responseInit.headers);
+		if(response.ok)setCacheHeaders(responseInit.headers);
 		response = new Response(response.body,responseInit);
 	}
 	for(let [key,value] of requestInit.headers){
