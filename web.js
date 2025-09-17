@@ -139,6 +139,10 @@ counter{
  ---webkit-text-stroke-width: 1px;
  ---webkit-text-stroke-color: #F0F8FF;
 }
+
+[open-block]{
+	display:block !important;
+}
 `;
 document.firstElementChild.appendChild(style);
 [...document.querySelectorAll(selectors)].forEach(x=>x.remove());
