@@ -321,15 +321,17 @@ Object.assign(counter.style,{
 				});
 				[...document.querySelectorAll('h2:not([expanded])')].forEach(h2=>{
 					h2.setAttribute('expand',false);
-					h2.addEventListener('click',()=>{
-						h2.setAttribute('expand',!Boolean(h2.setAttribute('expand')));
-					});
+					for(const event of ['click','touchend']){
+					    h2.addEventListener(event,()=>{
+						  h2.setAttribute('expand',!Boolean(h2.setAttribute('expand')));
+					    });
+					}
 				});
-				[...document.getElementsByTagName('*')].forEach(el=>{
+				/*[...document.getElementsByTagName('*')].forEach(el=>{
 					if(!String(el.innerHTML).trim().startsWith(el.tagName)){
 						el.prepend(el.tagName);
 					}
-				});
+				});*/
 			});
 		}
 	}
