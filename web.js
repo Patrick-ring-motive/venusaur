@@ -261,6 +261,27 @@ Object.assign(counter.style,{
 
 
 })();
+  
+})();
+
+
+
+(()=>{
+const scriptSrcSet = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src').set;
+const scriptSrcGet = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src').get;
+Object.defineProperty(HTMLScriptElement.prototype,'src',{
+	configurable:true,
+	enumberable:true,
+	get:scriptSrcGet,
+	set(value){
+		for(const ad of ['adthrive','doubleclick.net','ads.pubmatic','adsystem.com']){
+			if(String(value).includes(ad)){
+				return;
+			}
+		}
+		return scriptSrcSet.apply(this,arguments);
+	}
+});
 })();
 
 
