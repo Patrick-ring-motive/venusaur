@@ -32,7 +32,7 @@ const setCacheHeaders = (headers,seconds=5/*96400*/) =>{
 };
 const transformRequestHeaders = (requestHeaders,replacer)=>{
 	const newHeaders = new Headers();
-	for(const [key,value] of requestHeaders){
+	for(let [key,value] of requestHeaders){
 		if(/proto|policy/i.test(key))continue;
 		for(const key in hostMap){
 			value = value.replaceAll(key,hostMap[key]);
@@ -43,7 +43,7 @@ const transformRequestHeaders = (requestHeaders,replacer)=>{
 };
 const transformResponseHeaders = (responseHeaders,replacement)=>{
 	const newHeaders = new Headers();
-	for(const [key,value] of responseHeaders){
+	for(let [key,value] of responseHeaders){
 		if(/proto|policy/i.test(key))continue;
 		for(const key in hostMap){
 			value = value.replaceAll(hostMap[key],key);
