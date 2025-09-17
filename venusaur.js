@@ -1,6 +1,6 @@
 const hostMap = {
-	'm.venu.lenguapedia.com' :'m.bulbapedia.bulbagarden.net',
 	'm-venu.lenguapedia.com' :'m.bulbapedia.bulbagarden.net',
+	'm.venu.lenguapedia.com' :'m.bulbapedia.bulbagarden.net',
 	'venu.lenguapedia.com' :'bulbapedia.bulbagarden.net',
 };
 const targetHost = 'bulbapedia.bulbagarden.net';
