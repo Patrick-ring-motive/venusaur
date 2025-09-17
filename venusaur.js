@@ -89,9 +89,6 @@ export async function onRequest(request) {
 		statusText:response.statusText,
 		headers:transformResponseHeaders(response.headers,thisHost)
 	};
-	for(let [key,value] of requestInit.headers){
-		responseInit.headers.set(`request-${key}`,value);
-	}
     if(/text|html|script|xml|json/i.test(response.headers.get('content-type'))){
 		let resBody = await response.text();
 		for(const key in hostMap){
@@ -109,6 +106,9 @@ export async function onRequest(request) {
 	}else{
 		setCacheHeaders(responseInit.headers);
 		response = new Response(response.body,responseInit);
+	}
+	for(let [key,value] of requestInit.headers){
+		responseInit.headers.set(`request-${key}`,value);
 	}
     return response;
   };
