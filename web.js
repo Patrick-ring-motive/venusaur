@@ -144,7 +144,7 @@ counter{
 }
 `;
 document.firstElementChild.appendChild(style);
-
+[...document.querySelectorAll(selectors)].forEach(x=>x.remove());
 })();
 
 
