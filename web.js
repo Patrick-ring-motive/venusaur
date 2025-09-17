@@ -272,7 +272,7 @@ Object.assign(counter.style,{
   
 
 
-(()=>{
+/*(()=>{
 
 	const imgs = document.getElementsByTagName('img');
 	for(const img of imgs){
@@ -281,11 +281,12 @@ Object.assign(counter.style,{
 		}
 	}
 	
-})();
+})();*/
 
 
 (()=>{
 	for(const el of [HTMLScriptElement,HTMLScriptElement]){
+		try{
 		const scriptSrcSet = Object.getOwnPropertyDescriptor(el.prototype,'src')?.set;
 		const scriptSrcGet = Object.getOwnPropertyDescriptor(el.prototype,'src')?.get;
 		if(!scriptSrcSet || !scriptSrcGet)continue;
@@ -303,6 +304,9 @@ Object.assign(counter.style,{
 				return scriptSrcSet.call(this,value.replace('m.venu.lenguapedia.com','m-venu.lenguapedia.com').replace('archives.bulbagarden.net','archives.lenguapedia.com'));
 			}
 		});
+		}catch(e){
+			log(e?.message??e);
+		}
 	}
 })();
 
