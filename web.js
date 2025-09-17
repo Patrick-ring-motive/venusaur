@@ -1,4 +1,4 @@
-(()=>{
+l(()=>{
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
@@ -271,7 +271,7 @@ Object.assign(counter.style,{
 	for(const el of [HTMLScriptElement,HTMLScriptElement]){
 		const scriptSrcSet = Object.getOwnPropertyDescriptor(el.prototype,'src').set;
 		const scriptSrcGet = Object.getOwnPropertyDescriptor(el.prototype,'src').get;
-		Object.defineProperty(HTMLScriptElement.prototype,'src',{
+		Object.defineProperty(el.prototype,'src',{
 			configurable:true,
 			enumberable:true,
 			get:scriptSrcGet,
