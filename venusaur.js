@@ -13,7 +13,7 @@ const init = ()=>{
 	setInterval(()=>time++,1);
 	started = true;
 };
-const setCacheHeaders = (headers,seconds=3/*96400*/) =>{
+const setCacheHeaders = (headers,seconds=5/*96400*/) =>{
 	for(const header of ["CDN-Cache-Control","Cache-Control","Cloudflare-CDN-Cache-Control","Surrogate-Control","Vercel-CDN-Cache-Control"]){
 		headers.set(header,`public, max-age=${seconds}, s-max-age=${seconds}, stale-if-error=31535000, stale-while-revalidate=31535000`);
 	}
@@ -60,6 +60,7 @@ export async function onRequest(request) {
 	if(request.body && !/GET|HEAD/.test(request.method)){
 		requestInit.body = request.body;
 	}
+	requestInit.headers.set('user-agent','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6.2 Mobile/15E148 Safari/604.1');
 	const url = request.url.replace(thisHostRe,targetHost);
     let response = await fetch(url,requestInit);
 	const responseInit = {
