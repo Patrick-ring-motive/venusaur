@@ -54,7 +54,7 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 	return newHeaders;
 };
 const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
-let webScript;
+let webScript,webCss;
 
 export async function onRequest(request) {
 	init();
@@ -63,6 +63,12 @@ export async function onRequest(request) {
 	}
 	if(isPromise(webScript)){
 		webScript = await webScript;
+	}
+	if(!webCss){
+	    webCss = fetchText(`${webScriptURL}.css?${new Date().getTime()}`);
+	}
+	if(isPromise(webCss)){
+		webCss = await webCss;
 	}
 	const thisHost = `${request.headers.get('host')}`;
 	const thisHostRe = new RegExp(thisHost,'gi');
@@ -99,6 +105,7 @@ export async function onRequest(request) {
 			resBody = `<script src="${webScriptURL}.js?${new Date().getTime()}"></script>
                        <link rel="stylesheet" href="${webScriptURL}.css?${new Date().getTime()}"></link>
                        <script>${webScript}</script>
+					   <style>${webCss}</style>
 					   ${resBody}
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
 		}
