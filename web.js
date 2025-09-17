@@ -268,22 +268,24 @@ Object.assign(counter.style,{
 
 
 (()=>{
-const scriptSrcSet = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src').set;
-const scriptSrcGet = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src').get;
-Object.defineProperty(HTMLScriptElement.prototype,'src',{
-	configurable:true,
-	enumberable:true,
-	get:scriptSrcGet,
-	set(value){
-		value = String(value);
-		for(const ad of ['adthrive','doubleclick.net','ads.pubmatic','adsystem.com']){
-			if(value.includes(ad)){
-				return;
+	for(const el of [HTMLScriptElement,HTMLScriptElement]){
+		const scriptSrcSet = Object.getOwnPropertyDescriptor(el.prototype,'src').set;
+		const scriptSrcGet = Object.getOwnPropertyDescriptor(el.prototype,'src').get;
+		Object.defineProperty(HTMLScriptElement.prototype,'src',{
+			configurable:true,
+			enumberable:true,
+			get:scriptSrcGet,
+			set(value){
+				value = String(value);
+				for(const ad of ['adthrive','doubleclick.net','ads.pubmatic','adsystem.com']){
+					if(value.includes(ad)){
+						return;
+					}
+				}
+				return scriptSrcSet.call(this,value.replace('m.venu.lenguapedia.com','m-venu.lenguapedia.com').replace('archives.bulbagarden.net','archives.lenguapedia.com'));
 			}
-		}
-		return scriptSrcSet.call(this,value.replace('m.venu.lenguapedia.com','m-venu.lenguapedia.com'));
+		});
 	}
-});
 })();
 
 
