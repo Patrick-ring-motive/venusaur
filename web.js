@@ -1,4 +1,6 @@
 (()=>{
+	if(globalThis['&venusaur'])return;
+	globalThis['&venusaur'] = true;
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
@@ -262,7 +264,7 @@ Object.assign(counter.style,{
 
 })();
   
-})();
+
 
 (()=>{
 
@@ -312,3 +314,4 @@ Object.assign(counter.style,{
 	}
 })();
  
+})();
