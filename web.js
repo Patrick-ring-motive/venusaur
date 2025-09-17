@@ -1,4 +1,4 @@
-l(()=>{
+(()=>{
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
