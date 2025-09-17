@@ -1,6 +1,10 @@
 (()=>{
 	if(globalThis['&venusaur'])return;
 	globalThis['&venusaur'] = true;
+	document.firstElementChild.appendChild(document.createElement('log'));
+	self.log = (...x) =>{
+      document.getElementsByTagName('log')[0].innerHTML += x.join(' ') + '<br>';
+    };
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
