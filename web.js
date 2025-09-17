@@ -300,5 +300,15 @@ Object.assign(counter.style,{
 
 
 
-
+(()=>{
+	for(const obj of [window,document]){
+		for(const event of ["DOMContentLoaded",'readystatechange','load']){
+			obj.addEventListener(event,()=>{
+				[...document.querySelectorAll('img[src*="archives.bulbagarden.net"]').forEach(img=>{
+					img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
+				});
+			});
+		}
+	}
+})();
  
