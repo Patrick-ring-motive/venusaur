@@ -34,7 +34,10 @@ const transformRequestHeaders = (requestHeaders,replacer)=>{
 	const newHeaders = new Headers();
 	for(const [key,value] of requestHeaders){
 		if(/proto|policy/i.test(key))continue;
-		newHeaders.append(key,`${value}`.replace(replacer,targetHost));
+		for(const key in hostMap){
+			value = value.replaceAll(key,hostMap[key]);
+		}
+		newHeaders.append(key,value.replace(replacer,targetHost));
 	}
 	return setCacheHeaders(newHeaders,30);
 };
@@ -42,7 +45,10 @@ const transformResponseHeaders = (responseHeaders,replacement)=>{
 	const newHeaders = new Headers();
 	for(const [key,value] of responseHeaders){
 		if(/proto|policy/i.test(key))continue;
-		newHeaders.append(key,`${value}`.replace(targetHostRe,replacement));
+		for(const key in hostMap){
+			value = value.replaceAll(hostMap[key],key);
+		}
+		newHeaders.append(key,value.replace(targetHostRe,replacement));
 	}
 	return newHeaders;
 };
@@ -81,7 +87,7 @@ export async function onRequest(request) {
     if(/text|html|script|xml|json/i.test(response.headers.get('content-type'))){
 		let resBody = await response.text();
 		for(const key in hostMap){
-			url = url.replaceAll(hostMap[key],key);
+			resBody = resBody.replaceAll(hostMap[key],key);
 		}
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
