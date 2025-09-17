@@ -265,6 +265,16 @@ Object.assign(counter.style,{
   
 })();
 
+(()=>{
+
+	const imgs = document.getElementsByTagName('img');
+	for(const img of imgs){
+		if(img.src.includes('archives.bulbagarden.net')){
+			img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
+		}
+	}
+	
+})();
 
 
 (()=>{
@@ -287,6 +297,8 @@ Object.assign(counter.style,{
 		});
 	}
 })();
+
+
 
 
  
