@@ -271,12 +271,13 @@ Object.defineProperty(HTMLScriptElement.prototype,'src',{
 	enumberable:true,
 	get:scriptSrcGet,
 	set(value){
+		value = String(value);
 		for(const ad of ['adthrive','doubleclick.net','ads.pubmatic','adsystem.com']){
-			if(String(value).includes(ad)){
+			if(value.includes(ad)){
 				return;
 			}
 		}
-		return scriptSrcSet.apply(this,arguments);
+		return scriptSrcSet.call(this,value.replace('m.venu.lenguapedia.com','m-venu.lenguapedia.com'));
 	}
 });
 })();
