@@ -282,11 +282,12 @@ Object.assign(counter.style,{
 
 (()=>{
 	for(const el of [HTMLScriptElement,HTMLScriptElement]){
-		const scriptSrcSet = Object.getOwnPropertyDescriptor(el.prototype,'src').set;
-		const scriptSrcGet = Object.getOwnPropertyDescriptor(el.prototype,'src').get;
+		const scriptSrcSet = Object.getOwnPropertyDescriptor(el.prototype,'src')?.set;
+		const scriptSrcGet = Object.getOwnPropertyDescriptor(el.prototype,'src')?.get;
+		if(!scriptSrcSet || !scriptSrcGet)continue;
 		Object.defineProperty(el.prototype,'src',{
 			configurable:true,
-			enumberable:true,
+			enumerable:true,
 			get:scriptSrcGet,
 			set(value){
 				value = String(value);
