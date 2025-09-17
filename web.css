@@ -10,7 +10,7 @@ h1{
  color: blue !important;
 }
 
-
+div:has(h2[expand="true"])>section,
 [open-block]{
 	display:block !important;
 }
