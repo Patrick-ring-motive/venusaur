@@ -111,5 +111,11 @@ export async function onRequest(request) {
 	for(let [key,value] of requestInit.headers){
 		responseInit.headers.set(`request-${key}`,value);
 	}
+	setTimeout(()=>{
+		if(!isPromise(webScript)){
+			webScript = null;
+		}
+	},5000);
     return response;
+	
   };
