@@ -1,3 +1,8 @@
+const hostMap = {
+	'm.venu.lenguapedia.com' :'m.bulbapedia.bulbagarden.net',
+	'm-venu.lenguapedia.com' :'m.bulbapedia.bulbagarden.net',
+	'venu.lenguapedia.com' :'bulbapedia.bulbagarden.net',
+};
 const targetHost = 'bulbapedia.bulbagarden.net';
 const targetHostRe = new RegExp(targetHost,'gi');
 const webScriptURL = "https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js";
@@ -61,7 +66,11 @@ export async function onRequest(request) {
 		requestInit.body = request.body;
 	}
 	requestInit.headers.set('user-agent','Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6.2 Mobile/15E148 Safari/604.1');
-	const url = request.url.replace(thisHostRe,targetHost);
+	let url = request.url
+	for(const key in hostMap){
+		url = url.replaceAll(key,hostMap[key]);
+	}
+	url = url.replace(thisHostRe,targetHost);
     let response = await fetch(url,requestInit);
 	const responseInit = {
 		status:response.status,
@@ -70,6 +79,9 @@ export async function onRequest(request) {
 	};
     if(/text|html|script|xml|json/i.test(response.headers.get('content-type'))){
 		let resBody = await response.text();
+		for(const key in hostMap){
+			url = url.replaceAll(hostMap[key],key);
+		}
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
 			resBody = `<script src="${webScriptURL}?${new Date().getTime()}"></script>
