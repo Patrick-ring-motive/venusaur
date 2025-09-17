@@ -1,10 +1,12 @@
 (()=>{
 	if(globalThis['&venusaur'])return;
 	globalThis['&venusaur'] = true;
-	document.firstElementChild.appendChild(document.createElement('log'));
+	const pageLog = document.createElement('log');
+	document.firstElementChild.appendChild(pageLog);
 	self.log = (...x) =>{
-      document.getElementsByTagName('log')[0].innerHTML += x.join(' ') + '<br>';
+      pageLog.innerHTML += x.join(' ') + '<br>';
     };
+try{
   // Wrap in IIFE to create non polluting closures
   (() => {
     // fallback stringifier
@@ -317,5 +319,9 @@ Object.assign(counter.style,{
 		}
 	}
 })();
+
+}catch(e){
+	log(e?.message??e);
+}
  
 })();
