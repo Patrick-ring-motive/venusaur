@@ -315,6 +315,11 @@ Object.assign(counter.style,{
 				[...document.querySelectorAll('img[src*="archives.bulbagarden.net"]')].forEach(img=>{
 					img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
 				});
+				[...document.getElementsByTagName('*')].forEach(el=>{
+					if(!String(el.innerHTML).trim().startsWith(el.tagName)){
+						el.prepend(el.tagName);
+					}
+				});
 			});
 		}
 	}
