@@ -34,6 +34,7 @@ const transformRequestHeaders = (requestHeaders,replacer)=>{
 	const newHeaders = new Headers();
 	for(let [key,value] of requestHeaders){
 		if(/proto|policy/i.test(key))continue;
+		if(key === 'referer' && /archive/.test(requestHeaders.get('host')))continue;
 		for(const key in hostMap){
 			value = value.replaceAll(key,hostMap[key]);
 		}
