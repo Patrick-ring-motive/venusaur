@@ -78,6 +78,7 @@ export async function onRequest(request) {
 		url = url.replaceAll(key,hostMap[key]);
 	}
 	url = url.replace(thisHostRe,targetHost);
+	console.log(url,requestInit);
     let response = await fetch(url,requestInit);
 	const responseInit = {
 		status:response.status,
