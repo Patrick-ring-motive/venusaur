@@ -6,7 +6,7 @@ const hostMap = {
 };
 const targetHost = 'bulbapedia.bulbagarden.net';
 const targetHostRe = new RegExp(targetHost,'gi');
-const webScriptURL = "https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web.js";
+const webScriptURL = "https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/web";
 const fetchText = async function fetchText(...args){
 	const resp = await fetch(...args);
 	return resp.text();
@@ -59,7 +59,7 @@ let webScript;
 export async function onRequest(request) {
 	init();
 	if(!webScript){
-	    webScript = fetchText(`${webScriptURL}?${new Date().getTime()}`);
+	    webScript = fetchText(`${webScriptURL}.js?${new Date().getTime()}`);
 	}
 	if(isPromise(webScript)){
 		webScript = await webScript;
@@ -96,10 +96,11 @@ export async function onRequest(request) {
 		}
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="${webScriptURL}?${new Date().getTime()}"></script>
+			resBody = `<script src="${webScriptURL}.js?${new Date().getTime()}"></script>
+                       <link rel="stylesheet" href="${webScriptURL}.css?${new Date().getTime()}"></link>
                        <script>${webScript}</script>
 					   ${resBody}
-					   <script src="${webScriptURL}?${Math.random()}"></script>`;
+					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
 		}
 		if(response.ok)setCacheHeaders(responseInit.headers,3);
 		response = new Response(resBody,responseInit);
