@@ -140,12 +140,8 @@ counter{
  ---webkit-text-stroke-color: #F0F8FF;
 }
 
-[open-block]{
-	display:block !important;
-}
-h2{
-  color:green !important;
-}
+
+
 `;
 document.firstElementChild.appendChild(style);
 [...document.querySelectorAll(selectors)].forEach(x=>x.remove());
