@@ -2,6 +2,11 @@ h2{
  color: green !important;
 }
 
+h1{
+ color: blue !important;
+}
+
+
 [open-block]{
 	display:block !important;
 }
