@@ -1,3 +1,7 @@
 h2{
  color: green !important;
 }
+
+[open-block]{
+	display:block !important;
+}
