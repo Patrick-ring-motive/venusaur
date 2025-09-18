@@ -147,9 +147,9 @@ counter{
  ---webkit-text-stroke-width: 1px;
  ---webkit-text-stroke-color: #F0F8FF;
 }
-
-
-
+h2{
+ text-shadow:  -${px}px -${px}px 0 green, ${px}px -${px}px 0 green, -${px}px ${px}px 0 green, ${px}px ${px}px 0 green;
+}
 `;
 document.firstElementChild.appendChild(style);
 [...document.querySelectorAll(selectors)].forEach(x=>x.remove());
