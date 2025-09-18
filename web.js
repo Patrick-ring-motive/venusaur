@@ -313,6 +313,8 @@ Object.assign(counter.style,{
 
 
 (()=>{
+	const callback =
+            globalThis.requestIdleCallback ?? globalThis.requestAnimationFrame;
 	for(const obj of [window,document]){
 		for(const event of ["DOMContentLoaded",'readystatechange','load']){
 			obj.addEventListener(event,()=>{
@@ -321,8 +323,12 @@ Object.assign(counter.style,{
 				});
 				[...document.querySelectorAll('h2:not([expanded])')].forEach(h2=>{
 					h2.setAttribute('expand',false);
+					let running;
 					for(const event of ['click','touchend']){
 					    h2.addEventListener(event,()=>{
+						  if(running)return;
+						  running = true;
+						  callback(()=>{running = false;});
 						  h2.setAttribute('expand',!Boolean(h2.getAttribute('expand')));
 					    });
 					}
