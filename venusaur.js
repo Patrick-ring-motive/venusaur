@@ -19,7 +19,7 @@ const init = ()=>{
 	setInterval(()=>time++,1);
 	started = true;
 };
-const setCacheHeaders = (headers,seconds=5/*96400*/) =>{
+const setCacheHeaders = (headers,seconds=96400) =>{
 	for(const header of ["CDN-Cache-Control","Cache-Control","Cloudflare-CDN-Cache-Control","Surrogate-Control","Vercel-CDN-Cache-Control"]){
 		headers.set(header,`public, max-age=${seconds}, s-max-age=${seconds}, stale-if-error=31535000, stale-while-revalidate=31535000`);
 	}
