@@ -324,6 +324,7 @@ Object.assign(counter.style,{
 		for(const event of ["DOMContentLoaded",'readystatechange','load']){
 			obj.addEventListener(event,()=>{
 				[...document.querySelectorAll('img[src*="archives.bulbagarden.net"]')].forEach(img=>{
+					img.loading ??= "lazy";
 					img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
 				});
 				[...document.querySelectorAll('h2:not([expanded])')].forEach(h2=>{
