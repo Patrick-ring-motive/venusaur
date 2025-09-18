@@ -1,13 +1,13 @@
 h3{
- color: red !important;
+ --color: red !important;
 }
 
 h2{
- color: green !important;
+ --color: green !important;
 }
 
 h1{
- color: blue !important;
+ --color: blue !important;
 }
 
 h2[expand="true"] + section,
