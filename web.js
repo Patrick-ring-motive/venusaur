@@ -328,7 +328,7 @@ Object.assign(counter.style,{
 						  if(running)return;
 						  running = true;
 						  callback(()=>{running = false;});
-						  h2.setAttribute('expand',!Boolean(h2.getAttribute('expand')));
+						  h2.setAttribute('expand',h2.getAttribute('expand')=="false");
 					    });
 					}
 				});
