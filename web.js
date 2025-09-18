@@ -150,6 +150,12 @@ counter{
 h2{
  text-shadow:  -${px}px -${px}px 0 green, ${px}px -${px}px 0 green, -${px}px ${px}px 0 green, ${px}px ${px}px 0 green;
 }
+h1{
+ text-shadow:  -${px}px -${px}px 0 blue, ${px}px -${px}px 0 blue, -${px}px ${px}px 0 blue, ${px}px ${px}px 0 blue;
+}
+h3{
+ text-shadow:  -${px}px -${px}px 0 red, ${px}px -${px}px 0 red, -${px}px ${px}px 0 red, ${px}px ${px}px 0 red;
+}
 `;
 document.firstElementChild.appendChild(style);
 [...document.querySelectorAll(selectors)].forEach(x=>x.remove());
