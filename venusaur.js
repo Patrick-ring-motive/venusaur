@@ -59,13 +59,13 @@ let webScript,webCss;
 export async function onRequest(request) {
 	init();
 	if(!webScript){
-	    webScript = fetchText(`${webScriptURL}.js?${new Date().getTime()}`);
+	    webScript = fetchText(`${webScriptURL}.js?${time}`);
 	}
 	if(isPromise(webScript)){
 		webScript = await webScript;
 	}
 	if(!webCss){
-	    webCss = fetchText(`${webScriptURL}.css?${new Date().getTime()}`);
+	    webCss = fetchText(`${webScriptURL}.css?${time}`);
 	}
 	if(isPromise(webCss)){
 		webCss = await webCss;
@@ -102,8 +102,8 @@ export async function onRequest(request) {
 		}
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="${webScriptURL}.js?${new Date().getTime()}"></script>
-                       <link rel="stylesheet" href="${webScriptURL}.css?${new Date().getTime()}"></link>
+			resBody = `<script src="${webScriptURL}.js?${time}"></script>
+                       <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
                        <script>${webScript}</script>
 					   <style>${webCss}</style>
 					   ${resBody}
