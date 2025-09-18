@@ -323,7 +323,7 @@ Object.assign(counter.style,{
 					h2.setAttribute('expand',false);
 					for(const event of ['click','touchend']){
 					    h2.addEventListener(event,()=>{
-						  h2.setAttribute('expand',!Boolean(h2.setAttribute('expand')));
+						  h2.setAttribute('expand',!Boolean(h2.getAttribute('expand')));
 					    });
 					}
 				});
