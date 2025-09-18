@@ -10,10 +10,10 @@ h1{
  --color: blue !important;
 }
 
-h2[expand="true"] + section,
-xx[open-block]{
+h2[expand="true"] + section{
 	display:block !important;
 }
-h2[expand]:after{
-  --content: attr(expand);
+
+h2[expand="false"] + section{
+	display:none !important;
 }
