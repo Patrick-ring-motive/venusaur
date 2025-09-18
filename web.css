@@ -14,3 +14,6 @@ div:has(h2[expand="true"])>section,
 [open-block]{
 	display:block !important;
 }
+h2[expand]:after{
+  content: attr(expand);
+}
