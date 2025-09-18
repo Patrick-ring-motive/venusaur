@@ -313,8 +313,7 @@ Object.assign(counter.style,{
 
 
 (()=>{
-	const callback =
-            globalThis.requestIdleCallback ?? globalThis.requestAnimationFrame;
+	const callback = globalThis.requestIdleCallback ?? globalThis.requestAnimationFrame;
 	for(const obj of [window,document]){
 		for(const event of ["DOMContentLoaded",'readystatechange','load']){
 			obj.addEventListener(event,()=>{
