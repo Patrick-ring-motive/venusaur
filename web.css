@@ -15,5 +15,5 @@ xx[open-block]{
 	display:block !important;
 }
 h2[expand]:after{
-  content: attr(expand);
+  --content: attr(expand);
 }
