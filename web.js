@@ -1,4 +1,3 @@
-
 (()=>{
 	if(globalThis['&venusaur'])return;
 	globalThis['&venusaur'] = true;
