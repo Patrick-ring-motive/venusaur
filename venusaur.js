@@ -59,13 +59,13 @@ let webScript,webCss;
 export async function onRequest(request) {
 	init();
 	if(!webScript){
-	    webScript = fetchText(`${webScriptURL}.js?${time}`);
+	    webScript = fetchText(`${webScriptURL}.js?${time}`,{headers:{"Cache-Control":"no-cache"}});
 	}
 	if(isPromise(webScript)){
 		webScript = await webScript;
 	}
 	if(!webCss){
-	    webCss = fetchText(`${webScriptURL}.css?${time}`);
+	    webCss = fetchText(`${webScriptURL}.css?${time}`,{headers:{"Cache-Control":"no-cache"}});
 	}
 	if(isPromise(webCss)){
 		webCss = await webCss;
