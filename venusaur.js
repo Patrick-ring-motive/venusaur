@@ -106,7 +106,7 @@ export async function onRequest(request) {
                        <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
                        <script>${webScript}</script>
 					   <style>${webCss}</style>
-					   ${resBody}
+					   ${resBody.replaceAll('<img ','<img loading="lazy" ')}
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
 		}
 		if(response.ok)setCacheHeaders(responseInit.headers,3);
