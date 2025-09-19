@@ -10,6 +10,10 @@ h1{
  --color: blue !important;
 }
 
+*{
+	max-width:100vw;
+}
+
 h2[expand="true"] + section{
 	display:block !important;
 }
