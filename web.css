@@ -14,6 +14,10 @@ h1{
 	max-width:min(100vw,100%);
 }
 
+img{
+	border-radius:1vmax;
+}
+
 h2[expand="true"] + section{
 	display:block !important;
 }
