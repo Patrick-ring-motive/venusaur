@@ -109,7 +109,7 @@ export async function onRequest(request) {
 					   ${resBody.replaceAll('<img ','<img loading="lazy" ')}
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
 		}
-		if(response.ok)setCacheHeaders(responseInit.headers,3);
+		if(response.ok)setCacheHeaders(responseInit.headers,33);
 		response = new Response(resBody,responseInit);
 	}else{
 		if(response.ok)setCacheHeaders(responseInit.headers);
