@@ -19,9 +19,15 @@ img{
 }
 
 h2[expand="true"] + section{
-	display:block !important;
+	display: block !important;
+	visibility: visible !important;
+	content-visibility: visible !important;
+	opacity: 1 !important;
 }
 
 h2[expand="false"] + section{
-	display:none !important;
+	display: none !important;
+	visibility: hidden !important;
+	content-visibility: hidden !important;
+	opacity: 0 !important;
 }
