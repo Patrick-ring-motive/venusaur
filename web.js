@@ -154,7 +154,7 @@ h1{
  text-shadow:  -${px}px -${px}px 0 blue, ${px}px -${px}px 0 blue, -${px}px ${px}px 0 blue, ${px}px ${px}px 0 blue;
 }
 h3{
- text-shadow:  -${px}px -${px}px 0 #663399, ${px}px -${px}px 0 red, -${px}px ${px}px 0 red, ${px}px ${px}px 0 red;
+ text-shadow:  -${px}px -${px}px 0 #663399, ${px}px -${px}px 0 #663399, -${px}px ${px}px 0 #663399, ${px}px ${px}px 0 #663399;
 }
 `;
 document.firstElementChild.appendChild(style);
