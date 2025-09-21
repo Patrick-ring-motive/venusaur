@@ -1,5 +1,12 @@
-html:not([location-host*="venu"]) counter{
-	display:none;
+html:not([location-host*="venu"]) counter,
+[id="siteNotice"]{
+	display:none !important;
+	visibility:hidden !important;
+	content-visibility: hidden !important;
+	opacity: 0 !important;
+	color: rgba(0,0,0,0) !important;
+	background-color: rgba(0,0,0,0) !important;
+	border-color: rgba(0,0,0,0) !important;
 }
 
 *{
