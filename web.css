@@ -31,3 +31,7 @@ h2[expand="false"] + section{
 	content-visibility: hidden !important;
 	opacity: 0 !important;
 }
+
+h1,h2,h3{
+	text-transform: capitalize;
+}
