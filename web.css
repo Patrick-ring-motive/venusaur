@@ -1,13 +1,5 @@
-h3{
- --color: #663399 !important;
-}
-
-h2{
- --color: green !important;
-}
-
-h1{
- --color: blue !important;
+html:not([location-host*="venu"]) counter{
+	display:none;
 }
 
 *{
