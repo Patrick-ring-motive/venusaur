@@ -31,6 +31,6 @@ h2[expand="false"] + section{
 	opacity: 0 !important;
 }
 
-h1,h2,h3{
+h1,h2,h3,h4,h5,h6,th,thead,header{
 	text-transform: capitalize !important;
 }
