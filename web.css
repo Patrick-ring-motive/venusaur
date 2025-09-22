@@ -31,6 +31,14 @@ h2[expand="false"] + section{
 	opacity: 0 !important;
 }
 
+h2[expand="true"] .mf-icon{
+	transform: scaleY(-1) !important;
+}
+
+h2[expand="false"] .mf-icon{
+	transform: unset !important;
+}
+
 h1,h2,h3,h4,h5,h6,th,thead,header{
 	text-transform: capitalize !important;
 }
