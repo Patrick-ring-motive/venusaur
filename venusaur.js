@@ -120,6 +120,11 @@ export async function onRequest(request) {
                           filter:invert(1) hue-rotate(180deg);
                         }
                        </style>
+			           <script src="${webScriptURL}.js?${time}"></script>
+                       <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
+                       <script>${webScript}</script>
+					   <style>${webCss}</style>
+					   ${resBody.replaceAll('<img ','<img loading="lazy" ')}
                         <div>
                          <input
                           type="checkbox"
@@ -128,11 +133,6 @@ export async function onRequest(request) {
                           value="darkmode" />
                          <label for="darkmode">darkmode</label>
                         </div>
-			           <script src="${webScriptURL}.js?${time}"></script>
-                       <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
-                       <script>${webScript}</script>
-					   <style>${webCss}</style>
-					   ${resBody.replaceAll('<img ','<img loading="lazy" ')}
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
