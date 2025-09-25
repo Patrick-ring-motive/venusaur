@@ -334,7 +334,7 @@ Object.assign(counter.style,{
 					    h2.addEventListener(event,()=>{
 						  if(running)return;
 						  running = true;
-						  setTimeout(()=>callback(()=>{running = false;}),500);
+						  setTimeout(()=>callback(()=>{running = false;}),200);
 						  h2.setAttribute('expand',h2.getAttribute('expand')=="false");
 					    });
 					}
