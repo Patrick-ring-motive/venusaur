@@ -243,7 +243,7 @@ h3{
                                 });
                             });
                         };
-
+                       DOMInteractive(()=>document.querySelectorAll('img').forEach(x=>x.setAttribute('alt','🐯')));
                     })();
 
 
