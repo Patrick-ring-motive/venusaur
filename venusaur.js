@@ -132,7 +132,7 @@ export async function onRequest(request) {
                           name="darkmode"
                           value="darkmode" />
                          <label for="darkmode">darkmode</label>
-                        </div>
+                        </div><a href="https://www.google.com/search?q=site%3Alenguapedia.com" style="opacity:0;">backlink</a>
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
