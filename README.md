@@ -1,5 +1,9 @@
-https://venu.lenguapedia.com
+https://lenguapedia.com
 
 bulbapedia with no ads
 
-some perfornance improvements
+some performance improvements
+
+https://github.lenguapedia.com
+
+https://pkg.lenguapedia.com
