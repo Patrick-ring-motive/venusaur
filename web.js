@@ -352,5 +352,99 @@ Object.assign(counter.style,{
 }catch(e){
 	log(e?.message??e);
 }
- 
+                 (() => {
+                    function updateAttribute(elem, key, value) {
+                        try {
+                            if (elem.getAttribute(key) != value) {
+                                elem.setAttribute(key, value);
+                            }
+                        } catch (e) {
+                            console.warn(e, ...arguments);
+                        }
+                    }
+
+                    function updateProp(obj, key, value) {
+                        try {
+                            if (obj[key] != value) {
+                                obj[key] = value
+                            }
+                        } catch (e) {
+                            console.warn(e, ...arguments);
+                        }
+                    }
+
+                    const parse = x => {
+                        try { return JSON.parse(x); } catch { }
+                    };
+                    const idElems = [...document.querySelectorAll(':is(input,textarea)[id]')];
+                    for (const elem of idElems) {
+                        updateProp(elem, 'id', elem.getAttribute('id'));
+                    }
+                    for (const attr of ['data-testid','title','name','aria-label']) {
+                        const idElems = [...document.querySelectorAll(`:is(input,textarea):not([id])[${attr}]`)];
+                        for (const elem of idElems) {
+                            const id = elem.getAttribute(attr);
+                            if (document.querySelectorAll(`[${attr}="${id}"]`).length === 1) {
+                                updateProp(elem, 'id', id);
+                                updateAttribute(elem, 'id', id)
+                            }
+                        }
+                    }
+                    function bindLocal(elem) {
+                        if (!elem.id) return;
+                        const start = elem.cloneNode();
+                        const baseline = document.createElement(String(elem?.localName||elem?.tagName));
+                        const obj = parse(localStorage.getItem(`${location.pathname}-${elem.id}`));
+                        if (obj) {
+                            for (const key in obj.attributes || {}) {
+                                updateAttribute(elem, key, obj.attributes?.[key]);
+                            }
+                            const attrs = elem.getAttributeNames();
+                            for (const attr of attrs) {
+                                try {
+                                    if (!(attr in (obj?.attributes ?? {}))) {
+                                        elem.removeAttribute(attr);
+                                    }
+                                } catch (e) {
+                                    console.warn(e);
+                                }
+                            }
+                            for (const key in obj.props || {}) {
+                                updateProp(elem, key, obj.props?.[key]);
+                            }
+                            if (obj.props?.checked === false) {
+                                elem.removeAttribute('checked');
+                            }
+                        }
+                        const callback = typeof requestIdleCallback ? requestIdleCallback : requestAnimationFrame;
+                        let running = false;
+                        const binding = () => {
+                            if (running) return;
+                            running = true;
+                            callback(() => running = false);
+                            const obj = { attributes: {}, props: {} };
+                            const attrs = elem.getAttributeNames();
+                            for (const attr of attrs) {
+                                obj.attributes[attr] = elem.getAttribute(attr);
+                            }
+                            for (const key in elem) {
+                                if ((elem[key] == baseline[key] && elem[key] == start[key])
+                                    || String(elem[key]).length == 0
+                                    || ['outerHTML', 'innerHTML'].includes(key)
+                                    || ['function', 'object', 'undefined'].includes(typeof elem[key])) {
+                                    continue;
+                                }
+                                obj.props[key] = elem[key];
+                            }
+                            localStorage.setItem(`${location.pathname}-${elem.id}`, JSON.stringify(obj));
+                        };
+                        for (const event of ['change', 'blur', 'focus', 'click', 'keypress', 'mouseover', 'DOMActivate', 'touchstart', 'touchend']) {
+                            elem.addEventListener(event, binding);
+                        }
+                        const observer = new MutationObserver(binding);
+                        observer.observe(elem, { attributes: true, characterData: true });
+                    }
+
+                    document.querySelectorAll('input,textarea').forEach(bindLocal);
+                })();
 })();
