@@ -104,7 +104,23 @@ export async function onRequest(request) {
 		}
 		resBody = resBody.replace(targetHostRe,thisHost);
 		if(/html/i.test(response.headers.get('content-type'))){
-			resBody = `<script src="${webScriptURL}.js?${time}"></script>
+			resBody = `<style>
+                        html:has(#darkmode:checked),
+                        html:has(#darkmode:checked) img,
+                        html:has(#darkmode:checked) svg,
+  html:has(#darkmode:checked) image{
+    filter:invert(1) hue-rotate(180deg);
+  }
+</style>
+<div>
+    <input
+      type="checkbox"
+      id="darkmode"
+      name="darkmode"
+      value="darkmode" />
+    <label for="darkmode">darkmode</label>
+  </div>
+			           <script src="${webScriptURL}.js?${time}"></script>
                        <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
                        <script>${webScript}</script>
 					   <style>${webCss}</style>
