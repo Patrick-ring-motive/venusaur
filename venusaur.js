@@ -132,7 +132,11 @@ export async function onRequest(request) {
                           name="darkmode"
                           value="darkmode" />
                          <label for="darkmode">darkmode</label>
-                        </div><a href="https://www.google.com/search?q=site%3Alenguapedia.com" style="opacity:0;">backlink</a>
+                        </div>
+						<a href="https://www.google.com/search?q=site%3Alenguapedia.com" style="opacity:0;">backlink</a>
+						<a href="https://lenguapedia.com" style="opacity:0;">backlink</a>
+						<a href="https://github.lenguapedia.com" style="opacity:0;">backlink</a>
+						<a href="https://pkg.lenguapedia.com" style="opacity:0;">backlink</a>
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
