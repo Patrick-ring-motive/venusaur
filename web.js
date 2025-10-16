@@ -92,7 +92,7 @@
             const $fetch = globalThis.fetch;
             globalThis.fetch = Object.setPrototypeOf(async function fetch(...args) {
                 try {
-                    if (args.some(arg => ['adthrive','optable'].some(x=>String(arg.url ?? arg).includes(x)))) {
+                    if (args.some(arg => ['adthrive','optable','doubleclick'].some(x=>String(arg.url ?? arg).includes(x)))) {
                         return new Promise(() => {});
                     }
                     if (!args?.[0]?.url) {
@@ -102,7 +102,7 @@
                 } catch (e) {
                     console.warn(e, ...arguments);
                     return new Response(Object.getOwnPropertyNames(e ?? {}).map(x => `${x} : ${e[x]}`).join(''), {
-                        status: 569,
+                        status: 469,
                         statusText: e?.message
                     });
                 }
