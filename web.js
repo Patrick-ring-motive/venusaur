@@ -92,7 +92,7 @@
             const $fetch = globalThis.fetch;
             globalThis.fetch = Object.setPrototypeOf(async function fetch(...args) {
                 try {
-                    if (args.some(arg => String(arg.url ?? arg).includes('adthrive'))) {
+                    if (args.some(arg => ['adthrive','optable'].some(x=>String(arg.url ?? arg).includes(x)))) {
                         return new Promise(() => {});
                     }
                     if (!args?.[0]?.url) {
