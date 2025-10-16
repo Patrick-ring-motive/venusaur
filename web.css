@@ -43,6 +43,8 @@ h1,h2,h3,h4,h5,h6,th,thead,header{
 	text-transform: capitalize !important;
 }
 
+iframe,
+video,
 [typeof*="error"i],
 .mw-broken-media{
 	display:none !important;
