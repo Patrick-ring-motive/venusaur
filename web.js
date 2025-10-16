@@ -83,6 +83,21 @@
     ///////////////////////
     ///
     /////////////////////
+
+(()=>{
+const _insertBefore = Node.prototype.insertBefore;
+    Node.prototype.insertBefore = Object.setPrototypeOf(function insertBefore(newNode, referenceNode){
+        try{
+            return _insertBefore.call(this,newNode,referenceNode);
+        }catch(e){
+            console.warn(e,this,newNode, referenceNode);
+            return _insertBefore.call(referenceNode.parentNode,newNode,referenceNode);
+        }
+    },_insertBefore);
+
+})();
+
+    
     const pageLog = document.createElement('log');
     document.firstElementChild.appendChild(pageLog);
     self.log = (...x) => {
