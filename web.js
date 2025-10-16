@@ -177,6 +177,9 @@
                     if (args.some(arg => ['adthrive','optable','doubleclick'].some(x=>String(arg.url ?? arg).includes(x)))) {
                         return new Promise(() => {});
                     }
+                    if (args.some(arg => ['google-analytics'].some(x=>String(arg.url ?? arg).includes(x)))) {
+                        return new Response('{}');
+                    }
                     if (!args?.[0]?.url) {
                         args[0] &&= String(args[0]).replace(/bulbapedia.bulbagarden.net/i, location.host);
                     }
