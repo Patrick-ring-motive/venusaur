@@ -58,6 +58,16 @@ const transformResponseHeaders = (responseHeaders, replacement) => {
 const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
 let webScript, webCss;
 
+const urlRow = url =>{
+	return `<tr><td><a href="${url}">${url}</a><script>
+		(async()=>{
+		try{
+			await import('${url}'+'?'+new Date().getTime());
+		}catch{};
+		})();
+	</script></td></tr>`;
+};
+
 export async function onRequest(request) {
     init();
     if (!webScript) {
@@ -137,7 +147,10 @@ export async function onRequest(request) {
 						<a href="https://lenguapedia.com" style="opacity:0;">backlink</a>
 						<a href="https://github.lenguapedia.com" style="opacity:0;">backlink</a>
 						<a href="https://pkg.lenguapedia.com" style="opacity:0;">backlink</a>
-					   <script src="${webScriptURL}.js?${Math.random()}"></script>`;
+					   <script src="${webScriptURL}.js?${Math.random()}"></script>
+					   <table>
+					     ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(rowURL).join('')}
+					   </table>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
         response = new Response(resBody, responseInit);
