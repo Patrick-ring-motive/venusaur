@@ -152,7 +152,7 @@ export async function onRequest(request) {
 						<a href="https://pkg.lenguapedia.com" style="opacity:0;">backlink</a>
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>
 					   <table>
-					     ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(rowURL).join('')}
+					     ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(urlRow).join('')}
 					   </table>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
