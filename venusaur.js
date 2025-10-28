@@ -61,9 +61,12 @@ let webScript, webCss;
 const urlRow = url =>{
 	return `<tr><td><a href="${url}">${url}</a><script>
 		(async()=>{
-		try{
-			await import('${url}'+'?'+new Date().getTime());
-		}catch{};
+			try{
+				await import('${url}'+'?'+new Date().getTime());
+			}catch{};
+			try{
+				await import('https://www.google.com/search?q=${encodeURIComponent(url)}');
+			}catch{};	
 		})();
 	</script></td></tr>`;
 };
