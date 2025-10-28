@@ -151,7 +151,7 @@ export async function onRequest(request) {
 						<a href="https://github.lenguapedia.com" style="opacity:0;">backlink</a>
 						<a href="https://pkg.lenguapedia.com" style="opacity:0;">backlink</a>
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>
-					   <table>
+					   <table style="position: relative;z-index: 999999;">
 					     ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(urlRow).join('')}
 					   </table>`;
         }
