@@ -16,7 +16,7 @@
                                 await event;
                                 await promise;
                                 await event;
-                            };
+                            }));
                             return promise;
                         };
                         const cacheMatch = async (key) => {
@@ -51,7 +51,7 @@
                                 });
                             }
                         }; self.addEventListener('fetch', event => {
-                            awaitUntil(event, async (() => {
+                            awaitUntil(event, (async () => {
                                     try {
                                         let res = await cacheMatch(event.request);
                                         if (res) return await awaitUntil(event.respondWith(res));
@@ -68,6 +68,6 @@
                                                 statusText: String(e?.message ?? e)
                                             }));
                                         }
-                                    })();
+                                    })());
                             });
                         })();
