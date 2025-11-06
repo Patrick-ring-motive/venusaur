@@ -177,6 +177,9 @@ export async function onRequest(request) {
             webScript = null;
         }
     }, 5000);
+	if(response.status >= 400){
+		response.headers.set('content-type',response.status);
+	}
     return response;
 
 };
