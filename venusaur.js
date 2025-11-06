@@ -95,7 +95,7 @@ export async function onRequest(request) {
     }
 	if(request.url.endsWith('sw.js')){
 		const swRes = await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
-		const swHeaders = transformResponseHeaders(swRes.headers);
+		const swHeaders = new Headers(swRes.headers.entries());
 		swHeaders.set('content-type','text/jvascript');
 		return new Response(swRes.Body,{headers:swHeaders});
 	}
