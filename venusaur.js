@@ -97,7 +97,7 @@ export async function onRequest(request) {
 		const swRes = await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
 		const swHeaders = new Headers(swRes.headers.entries());
 		swHeaders.set('content-type','text/javascript');
-		return new Response(swRes.Body,{headers:swHeaders});
+		return new Response(swRes.body,{headers:swHeaders});
 	}
     const thisHost = `${request.headers.get('host')}`;
     const thisHostRe = new RegExp(thisHost, 'gi');
