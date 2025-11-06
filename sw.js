@@ -53,12 +53,12 @@
                 if(test?.then){
                     test = await test;
                 }
-                let res = await cacheMatch(event.request);
+                let res = await cacheMatch(event.request.clone());
                 if (res) {
                     responded = true;
                     return res;
                 } else {
-                    res = await serviceFetch(event.request);
+                    res = await serviceFetch(event.request.clone());
                     if(!res.status || res.status >= 400){
                         responded = true;
                         return test.clone();
