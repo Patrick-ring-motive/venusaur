@@ -46,6 +46,12 @@
     self.addEventListener('fetch', event => {
         const fetchEvent = ((async () => {
             try {
+                let responded = false;
+                setTimeout(()=>{
+                    if(!responded){
+                        event.respondWith(test?.clone?.());
+                    }
+                },5000);
                 if(!test){
                     test = serviceFetch('https://archives.lenguapedia.com/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
                 }
@@ -54,12 +60,15 @@
                 }
                 let res = await cacheMatch(event.request);
                 if (res) {
+                    responded = true;
                     return res;
                 } else {
                     res = await serviceFetch(event.request);
                     if(!res.status || res.status >= 400){
+                        responded = true;
                         return test.clone();
                     }
+                    responded = true;
                     return res
                 }
             } catch (e) {
