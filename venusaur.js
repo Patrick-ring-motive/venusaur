@@ -93,6 +93,9 @@ export async function onRequest(request) {
     if (isPromise(webCss)) {
         webCss = await webCss;
     }
+	if(request.url.endsWith('sw.js')){
+		return await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
+	}
     const thisHost = `${request.headers.get('host')}`;
     const thisHostRe = new RegExp(thisHost, 'gi');
     const requestInit = {
@@ -133,6 +136,7 @@ export async function onRequest(request) {
                           filter:invert(1) hue-rotate(180deg);
                         }
                        </style>
+					   <script src="/sw.js"></script>
 			           <script src="${webScriptURL}.js?${time}"></script>
                        <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
                        <script>${webScript}</script>
