@@ -53,6 +53,7 @@ const transformResponseHeaders = (responseHeaders, replacement) => {
         }
         newHeaders.append(key, value.replace(targetHostRe, replacement));
     }
+	newHeaders.set('access-control-allow-origin','*');
     return newHeaders;
 };
 const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
