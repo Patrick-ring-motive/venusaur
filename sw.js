@@ -54,20 +54,20 @@
             try {
                 let res = await cacheMatch(event.request);
                 if (res) {
-                    await awaitUntil(event.respondWith(res));
+                    await awaitUntil(event,event.respondWith(res));
                 } else {
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
                         await cachePut(event.request, res);
                     }
-                    await awaitUntil(event.respondWith(res));
+                    await awaitUntil(event,event.respondWith(res));
                 }
             } catch (e) {
                 console.warn(e, event);
-                return await awaitUntil(new Response(String(e?.stack ?? e), {
+                return await awaitUntil(event,event.respondWith(new Response(String(e?.stack ?? e), {
                     status: 569,
                     statusText: String(e?.message ?? e)
-                }));
+                })));
             }
         })());
     });
