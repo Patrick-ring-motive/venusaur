@@ -25,7 +25,7 @@
                                 const cache = await caches.open(CACHE_NAME);
                                 return (await cache.match(key, {
                                     ignoreMethod: true,
-                                    ignorVary: true
+                                    ignoreVary: true
                                 }))?.clone?.();
                             } catch (e) {
                                 console.warn(e, ...args);
@@ -56,7 +56,7 @@
                                         let res = await cacheMatch(event.request);
                                         if (res) return await awaitUntil(event.respondWith(res));
                                         res = await serviceFetch(request);
-                                        if (/image/i.test(res.headers.get('content-type')) {
+                                        if (/image/i.test(res.headers.get('content-type'))) {
                                                 await cachePut(event.request, res);
                                             }
                                             return await awaitUntil(event.respondWith(res));
