@@ -49,9 +49,17 @@
             });
         }
     };
+    
+    let test;
     self.addEventListener('fetch', event => {
         event.waitUntil((async () => {
             try {
+                if(!test){
+                    test = serviceFetch('https://archives.bulbagarden.net/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
+                }
+                if(test?.then){
+                    test = await test;
+                }
                 let res = await cacheMatch(event.request);
                 if (res) {
                     await awaitUntil(event,event.respondWith(res));
@@ -59,6 +67,7 @@
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
                         await cachePut(event.request, res);
+                        await awaitUntil(event,event.respondWith(test.clone());
                     }
                     await awaitUntil(event,event.respondWith(res));
                 }
