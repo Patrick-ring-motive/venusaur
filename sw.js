@@ -55,7 +55,7 @@
                                     try {
                                         let res = await cacheMatch(event.request);
                                         if (res) return await awaitUntil(event.respondWith(res));
-                                        res = await serviceFetch(request);
+                                        res = await serviceFetch(event.request);
                                         if (/image/i.test(res.headers.get('content-type'))) {
                                                 await cachePut(event.request, res);
                                             }
