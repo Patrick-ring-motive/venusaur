@@ -145,7 +145,7 @@ export async function onRequest(request) {
                        <link rel="stylesheet" href="${webScriptURL}.css?${time}"></link>
                        <script>${webScript}</script>
 					   <style>${webCss}</style>
-					   ${resBody.replaceAll('<img ','<img loading="lazy" onerror="(e)=>{e.target.src=\"https://archives.lenguapedia.com/media/upload/thumb/b/b0/0026Raichu.png/250px-0026Raichu.png\"};"')}
+					   ${resBody.replaceAll('<img ','<img loading="lazy" onerror="((e)=>console.warn(e))();"')}
                         <div>
                          <input
                           type="checkbox"
