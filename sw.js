@@ -59,7 +59,7 @@
                     return res;
                 } else {
                     res = await serviceFetch(event.request.clone());
-                    if(!res.status || res.status >= 400){
+                    if(res.status >= 400){
                         console.warn(res);
                         responded = true;
                         return test.clone();
