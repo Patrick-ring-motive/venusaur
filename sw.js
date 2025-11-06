@@ -52,7 +52,7 @@
                 if(test?.then){
                     test = await test;
                 }
-                if (/\.png/i.test(even.request.url)) {
+                if (/\.png/i.test(event.request.url)) {
                         return test.clone();
                 }
                 let res = await cacheMatch(event.request);
