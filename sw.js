@@ -1,4 +1,3 @@
-console.log('window',typeof Window);
 (() => {
     if (typeof Window === 'undefined') return;
     navigator.serviceWorker.register(document.currentScript.src);
