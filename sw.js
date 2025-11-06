@@ -67,7 +67,7 @@
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
                         await cachePut(event.request, res);
-                        await awaitUntil(event,event.respondWith(test.clone());
+                        await awaitUntil(event,event.respondWith(test.clone()));
                     }
                     await awaitUntil(event,event.respondWith(res));
                 }
