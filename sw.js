@@ -26,11 +26,22 @@
     return promise;
   };
 
-  const cacheMatch = (async()=>{
+  const cacheMatch = async(key)=>{
     try{
+      key = String(key?.clone?.().url ?? key);
       const cache = await caches.open(CACHE_NAME);
+      return await cache.match(key,{ignoreMethod:true,ignorVary:true});
     }catch(e){
       console.warn(e,...args);
+    }
+  };
+
+  const serviceFetch = async(...args)=>{
+    try{
+      return await fetch(...args);
+    }catch(e){
+      console.warn(e,...args);
+      return new Response(String(e?.stack??e),{status:569,statusText:String(e?.message??e)});
     }
   };
   
