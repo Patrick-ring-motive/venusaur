@@ -47,7 +47,7 @@
         const fetchEvent = ((async () => {
             try {
                 if(!test){
-                    test = serviceFetch('https://archives.bulbagarden.net/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
+                    test = serviceFetch('https://archives.lenguapedia.com/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
                 }
                 if(test?.then){
                     test = await test;
