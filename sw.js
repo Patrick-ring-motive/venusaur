@@ -63,7 +63,7 @@
                         responded = true;
                         return test.clone();
                     }
-                    if(/image/i.test(res.headers.get('content-type')){
+                    if(/image/i.test(res.headers.get('content-type'))){
                         await cachePut(event.request.url,res);
                     }
                     responded = true;
