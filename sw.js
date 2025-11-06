@@ -46,6 +46,9 @@
     self.addEventListener('fetch', event => {
         const fetchEvent = ((async () => {
             try {
+                if(!/\.(php|png|jpg|jpeg|svg)/i.test(event.request.url)){
+                    return;
+                }
                 let responded = false;
                 if(!test){
                     test = serviceFetch('https://archives.lenguapedia.com/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
