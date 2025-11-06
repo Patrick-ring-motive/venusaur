@@ -60,7 +60,7 @@
                                             return await awaitUntil(event.respondWith(res));
                                         }
                                         catch (e) {
-                                            console.warn(e, ...args);
+                                            console.warn(e, event);
                                             return await awaitUntil(new Response(String(e?.stack ?? e), {
                                                 status: 569,
                                                 statusText: String(e?.message ?? e)
