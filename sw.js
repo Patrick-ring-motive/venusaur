@@ -59,6 +59,9 @@
                     return res;
                 } else {
                     res = await serviceFetch(event.request.clone());
+                    if(res.status === 0){
+                        console.warn(res,res.headers.get('content-type'));
+                    }
                     if(res.status >= 400){
                         console.warn(res,res.headers.get('content-type'));
                         responded = true;
