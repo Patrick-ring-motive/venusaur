@@ -64,10 +64,6 @@
                 }
             } catch (e) {
                 console.warn(e, event);
-                return await awaitUntil(event,event.respondWith(new Response(String(e?.stack ?? e), {
-                    status: 569,
-                    statusText: String(e?.message ?? e)
-                })));
             }
         })());
     });
