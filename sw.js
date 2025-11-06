@@ -46,11 +46,11 @@
     self.addEventListener('fetch', event => {
         const fetchEvent = ((async () => {
             try {
+                if(!test){
+                    test = serviceFetch('https://archives.lenguapedia.com/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
+                }
                 if(test?.then){
                     test = await test;
-                }
-                if (/\.png/i.test(event.request.url)) {
-                        return test.clone();
                 }
                 let res = await cacheMatch(event.request);
                 if (res) {
