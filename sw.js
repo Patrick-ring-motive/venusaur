@@ -54,19 +54,20 @@
                 }
                 let res = await cacheMatch(event.request);
                 if (res) {
-                    await event.respondWith(res);
+                    await return res;
                 } else {
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
                         await cachePut(event.request, res);
-                        await event.respondWith(test.clone());
+                        return test.clone();
                     }
-                    await event.respondWith(res);
+                    return res
                 }
             } catch (e) {
                 console.warn(e, event);
             }
         })());
+        event.respondWith(fetchEvent);
         event.waitUntil(fetchEvent);
     });
 })();
