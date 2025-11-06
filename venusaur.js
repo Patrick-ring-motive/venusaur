@@ -94,7 +94,10 @@ export async function onRequest(request) {
         webCss = await webCss;
     }
 	if(request.url.endsWith('sw.js')){
-		return await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
+		const swRes = await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
+		const swHeaders = transformResponseHeaders(swRes.headers);
+		swHeaders.set('content-type','text/jvascript');
+		return new Response(swRes.Body,{headers:swHeaders});
 	}
     const thisHost = `${request.headers.get('host')}`;
     const thisHostRe = new RegExp(thisHost, 'gi');
