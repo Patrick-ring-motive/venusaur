@@ -54,7 +54,7 @@
                 }
                 let res = await cacheMatch(event.request);
                 if (res) {
-                    await return res;
+                    return res;
                 } else {
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
