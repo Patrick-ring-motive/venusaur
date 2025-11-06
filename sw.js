@@ -52,15 +52,14 @@
                 if(test?.then){
                     test = await test;
                 }
+                if (/\.png/i.test(even.request.url)) {
+                        return test.clone();
+                }
                 let res = await cacheMatch(event.request);
                 if (res) {
                     return res;
                 } else {
                     res = await serviceFetch(event.request);
-                    if (/image/i.test(res.headers.get('content-type'))) {
-                        await cachePut(event.request, res);
-                        return test.clone();
-                    }
                     return res
                 }
             } catch (e) {
