@@ -50,7 +50,7 @@
         }
     };
     self.addEventListener('fetch', event => {
-        awaitUntil(event, (async () => {
+        event.waitUntil((async () => {
             try {
                 let res = await cacheMatch(event.request);
                 if (res) {
