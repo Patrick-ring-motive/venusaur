@@ -9,14 +9,6 @@
     // Install: pre-cache app shell
     self.addEventListener('install', event => self.skipWaiting());
     self.addEventListener('activate', event => self.clients.claim());
-    const awaitUntil = (event, promise) => {
-        event.waitUntil((async () => {
-            await event;
-            await promise;
-            await event;
-        }));
-        return promise;
-    };
     const cacheMatch = async (key) => {
         try {
             key = String(key?.clone?.().url ?? key);
@@ -52,7 +44,7 @@
     
     let test;
     self.addEventListener('fetch', event => {
-        event.waitUntil((async () => {
+        const fetchEvent = ((async () => {
             try {
                 if(!test){
                     test = serviceFetch('https://archives.bulbagarden.net/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
@@ -62,18 +54,19 @@
                 }
                 let res = await cacheMatch(event.request);
                 if (res) {
-                    await awaitUntil(event,event.respondWith(res));
+                    await ,event.respondWith(res);
                 } else {
                     res = await serviceFetch(event.request);
                     if (/image/i.test(res.headers.get('content-type'))) {
                         await cachePut(event.request, res);
-                        await awaitUntil(event,event.respondWith(test.clone()));
+                        await event.respondWith(test.clone());
                     }
-                    await awaitUntil(event,event.respondWith(res));
+                    await event.respondWith(res);
                 }
             } catch (e) {
                 console.warn(e, event);
             }
         })());
+        event.waitUntil(fetchEvent);
     });
 })();
