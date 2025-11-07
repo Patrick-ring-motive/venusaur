@@ -1,3 +1,14 @@
+(()=>{
+    setInterval(()=>{
+        const imgs = document.querySelectorAll(`img[src*="m.archive"]`);
+        for(const img of imgs){
+            img.src = img.src.replace('m.archive','archive');
+            img.removeAttribute('srcset');
+        }
+    },100);
+})();
+
+
 (() => {
     if (globalThis['&venusaur']) return;
     globalThis['&venusaur'] = true;
