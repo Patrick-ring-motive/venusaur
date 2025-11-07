@@ -3,10 +3,8 @@
     navigator.serviceWorker.register(document.currentScript.src);
 })();
 (() => {
-    // service-worker.js
     if (typeof Window !== 'undefined') return;
     const CACHE_NAME = 'app-cache-v1';
-    // Install: pre-cache app shell
     self.addEventListener('install', event => self.skipWaiting());
     self.addEventListener('activate', event => self.clients.claim());
     const cacheMatch = async (key) => {
