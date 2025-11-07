@@ -67,7 +67,7 @@
                     if(res.status === 0){
                         console.warn(res,res.headers.get('content-type'));
                     }
-                    if(res.status >= 400){
+                    if(res.status >= 400 || res.headers.get('content-type') >= 400){
                         console.warn(res,res.headers.get('content-type'));
                         responded = true;
                         //return;
