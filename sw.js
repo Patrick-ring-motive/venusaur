@@ -70,7 +70,7 @@
                     if(res.status >= 400){
                         console.warn(res,res.headers.get('content-type'));
                         responded = true;
-                        return;
+                        //return;
                         return test.clone();
                     }
                     if(/image/i.test(res.headers.get('content-type'))){
