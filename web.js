@@ -1,6 +1,6 @@
 (()=>{
     setInterval(()=>{
-        const imgs = document.querySelectorAll(`img[src*="m.archive"]`);
+        const imgs = [...document.querySelectorAll(`img[src*="m.archive"]`)];
         for(const img of imgs){
             img.src = img.src.replace('m.archive','archive');
             img.removeAttribute('srcset');
