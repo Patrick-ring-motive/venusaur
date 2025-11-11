@@ -1,6 +1,6 @@
 (() => {
     if (typeof Window === 'undefined') return;
-    navigator.serviceWorker.register(document.currentScript.src);
+    navigator.serviceWorker.register(document.currentScript?.src ?? new Error().stack.match(/(https?:\/\/[^)\s]+)/)[1].replace(/:\d+(:\d+)?$/, ''));
 })();
 (() => {
     if (typeof Window !== 'undefined') return;
