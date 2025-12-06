@@ -213,27 +213,28 @@ const XMARK = '✗';
 /**
  * Fetch browser compatibility data from MDN's API
  */
+const dataUrl = `https://unpkg.com/@mdn/browser-compat-data@latest/data.json`;
+let compatData;
 async function fetchCompatData(feature) {
-  const url = `https://unpkg.com/@mdn/browser-compat-data@latest/data.json`;
-  
   try {
-    const response = await fetch(url, {
-      cf: {
-        cacheTtl: 3600, // Cache the full compat data for 1 hour
-        cacheEverything: true,
-      }
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch compat data: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
+	if(!compatData){
+	  compatData = (async()=>{
+        const response = await fetch(dataUrl);
+        return await response.json();
+	  })();
+	}
+	if(compatData instanceof Promise){
+	  try{
+		  compatData = await compatData;
+	  }catch(e){
+		  compatData = undefined;
+		  console.warn(e,...arguments);
+	  }
+	}
     // Navigate the nested object structure
     // e.g., "api.ReadableStream.from" -> data.api.ReadableStream.from
     const parts = feature.split('.');
-    let current = data;
+    let current = compatData;
     
     for (const part of parts) {
       current = current?.[part];
