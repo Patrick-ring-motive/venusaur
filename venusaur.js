@@ -1,3 +1,4 @@
+
 const hostMap = {
     'm-venu.lenguapedia.com': 'm.bulbapedia.bulbagarden.net',
     'm.venu.lenguapedia.com': 'm.bulbapedia.bulbagarden.net',
@@ -73,7 +74,10 @@ const urlRow = url =>{
 };
 
 export async function onRequest(request) {
-    init();
+    if(request.url.includes('web-streams-shim')){
+		return webStreamsShim(request);
+	}
+	init();
     if (!webScript) {
         webScript = fetchText(`${webScriptURL}.js?${time}`, {
             headers: {
@@ -181,5 +185,9 @@ export async function onRequest(request) {
 		response.headers.set('content-type',response.status);
 	}
     return response;
+};
 
+
+async function webStreamsShim(request){
+	return new Response(null,{status:404});
 };
