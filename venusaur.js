@@ -188,6 +188,162 @@ export async function onRequest(request) {
 };
 
 
+
+
+
+
+
+/**
+ * Cloudflare Worker to generate browser compatibility SVG badges
+ * Usage: https://your-worker.workers.dev/?feature=api.ReadableStream.from
+ */
+
+// Browser configurations with colors and display info
+const BROWSERS = {
+  chrome: { name: 'Chrome', color: '#4285f4', order: 1 },
+  firefox: { name: 'Firefox', color: '#ff7139', order: 2 },
+  safari: { name: 'Safari', color: '#006cff', order: 3 },
+  edge: { name: 'Edge', color: '#0078d7', order: 4 },
+  // samsung_internet: { name: 'Samsung', color: '#1428a0', order: 5 },
+};
+
+const CHECKMARK = '✓';
+const XMARK = '✗';
+
+/**
+ * Fetch browser compatibility data from MDN's API
+ */
+async function fetchCompatData(feature) {
+  const url = `https://unpkg.com/@mdn/browser-compat-data@latest/data.json`;
+  
+  try {
+    const response = await fetch(url, {
+      cf: {
+        cacheTtl: 3600, // Cache the full compat data for 1 hour
+        cacheEverything: true,
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch compat data: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Navigate the nested object structure
+    // e.g., "api.ReadableStream.from" -> data.api.ReadableStream.from
+    const parts = feature.split('.');
+    let current = data;
+    
+    for (const part of parts) {
+      current = current?.[part];
+      if (!current) {
+        throw new Error(`Feature path not found: ${feature}`);
+      }
+    }
+    
+    return current.__compat?.support || {};
+  } catch (error) {
+    console.error('Error fetching compat data:', error);
+    return null;
+  }
+}
+
+/**
+ * Determine if a browser version indicates support
+ */
+function isSupported(versionData) {
+  if (!versionData) return false;
+  
+  // Handle array of version data (multiple implementation notes)
+  if (Array.isArray(versionData)) {
+    versionData = versionData[0];
+  }
+  
+  // Check for version_added
+  if (versionData.version_added === true) return true;
+  if (versionData.version_added === false) return false;
+  if (typeof versionData.version_added === 'string') return true;
+  
+  return false;
+}
+
+/**
+ * Generate SVG badge for browser compatibility
+ */
+function generateSVG(feature, compatData) {
+  if (!compatData) {
+    return generateErrorSVG('Feature data not found');
+  }
+  
+  const browsers = Object.entries(BROWSERS)
+    .sort((a, b) => a[1].order - b[1].order)
+    .map(([key, config]) => ({
+      key,
+      ...config,
+      supported: isSupported(compatData[key])
+    }));
+  
+  const cellWidth = 80;
+  const cellHeight = 30;
+  const headerHeight = 35;
+  const padding = 10;
+  const width = cellWidth * browsers.length + padding * 2;
+  const height = headerHeight + cellHeight + padding * 2;
+  
+  // Generate SVG
+  let svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .header { font: bold 12px sans-serif; fill: #333; }
+      .browser { font: 11px sans-serif; fill: #fff; }
+      .status { font: bold 16px sans-serif; }
+      .supported { fill: #22c55e; }
+      .unsupported { fill: #ef4444; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="${width}" height="${height}" fill="#f8f9fa" rx="5"/>
+  
+  <!-- Header -->
+  <text x="${width / 2}" y="${padding + 15}" class="header" text-anchor="middle">${feature.split('.').pop()}</text>
+  
+  <!-- Browser cells -->`;
+  
+  browsers.forEach((browser, i) => {
+    const x = padding + i * cellWidth;
+    const y = padding + headerHeight;
+    
+    svg += `
+  <rect x="${x}" y="${y}" width="${cellWidth - 2}" height="${cellHeight}" fill="${browser.color}" rx="3"/>
+  <text x="${x + cellWidth / 2}" y="${y + 13}" class="browser" text-anchor="middle">${browser.name}</text>
+  <text x="${x + cellWidth / 2}" y="${y + 26}" class="status ${browser.supported ? 'supported' : 'unsupported'}" text-anchor="middle">${browser.supported ? CHECKMARK : XMARK}</text>`;
+  });
+  
+  svg += `
+</svg>`;
+  
+  return svg;
+}
+
+/**
+ * Generate error SVG
+ */
+function generateErrorSVG(message) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .error { font: 12px sans-serif; fill: #ef4444; }
+    </style>
+  </defs>
+  <rect width="400" height="80" fill="#fee" rx="5"/>
+  <text x="200" y="40" class="error" text-anchor="middle">${message}</text>
+</svg>`;
+}
+
 async function webStreamsShim(request){
 	return new Response(null,{status:404});
 };
