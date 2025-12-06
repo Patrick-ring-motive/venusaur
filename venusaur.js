@@ -345,5 +345,32 @@ function generateErrorSVG(message) {
 }
 
 async function webStreamsShim(request){
-	return new Response(null,{status:404});
+	const url = new URL(request.url);
+    
+    // Parse query parameters
+    const feature = url.searchParams.get('feature');
+    
+    if (!feature) {
+      return new Response(generateErrorSVG('Missing ?feature= parameter'), {
+        headers: {
+          'Content-Type': 'image/svg+xml',
+          'Cache-Control': 'public, max-age=300', // 5 minutes
+        }
+      });
+    }
+    
+    // Fetch compatibility data
+    const compatData = await fetchCompatData(feature);
+    
+    // Generate SVG
+    const svg = generateSVG(feature, compatData);
+    
+    // Return response with caching headers
+    return new Response(svg, {
+      headers: {
+        'Content-Type': 'image/svg+xml',
+        'Cache-Control': 'public, max-age=300', // 5 minutes
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
 };
