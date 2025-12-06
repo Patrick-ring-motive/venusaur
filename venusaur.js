@@ -54,14 +54,14 @@ const transformResponseHeaders = (responseHeaders, replacement) => {
         }
         newHeaders.append(key, value.replace(targetHostRe, replacement));
     }
-	newHeaders.set('access-control-allow-origin','*');
+    newHeaders.set('access-control-allow-origin', '*');
     return newHeaders;
 };
 const isPromise = x => x instanceof Promise || x?.constructor?.name == 'Promise' || typeof x?.then == 'function';
 let webScript, webCss;
 
-const urlRow = url =>{
-	return `<tr><td><a href="${url}">${url}</a><script>
+const urlRow = url => {
+    return `<tr><td><a href="${url}">${url}</a><script>
 		(async()=>{
 			try{
 				await import('${url}'+'?'+new Date().getTime());
@@ -74,10 +74,10 @@ const urlRow = url =>{
 };
 
 export async function onRequest(request) {
-    if(request.url.includes('web-streams-shim')){
-		return webStreamsShim(request);
-	}
-	init();
+    if (request.url.includes('web-streams-shim')) {
+        return webStreamsShim(request);
+    }
+    init();
     if (!webScript) {
         webScript = fetchText(`${webScriptURL}.js?${time}`, {
             headers: {
@@ -98,12 +98,14 @@ export async function onRequest(request) {
     if (isPromise(webCss)) {
         webCss = await webCss;
     }
-	if(request.url.endsWith('sw.js')){
-		const swRes = await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
-		const swHeaders = new Headers(swRes.headers.entries());
-		swHeaders.set('content-type','text/javascript');
-		return new Response(swRes.body,{headers:swHeaders});
-	}
+    if (request.url.endsWith('sw.js')) {
+        const swRes = await fetch(`https://raw.githubusercontent.com/Patrick-ring-motive/venusaur/refs/heads/main/sw.js?${new Date().getTime()}`);
+        const swHeaders = new Headers(swRes.headers.entries());
+        swHeaders.set('content-type', 'text/javascript');
+        return new Response(swRes.body, {
+            headers: swHeaders
+        });
+    }
     const thisHost = `${request.headers.get('host')}`;
     const thisHostRe = new RegExp(thisHost, 'gi');
     const requestInit = {
@@ -119,9 +121,9 @@ export async function onRequest(request) {
         url = url.replaceAll(key, hostMap[key]);
     }
     url = url.replace(thisHostRe, targetHost);
-   // if (url.includes('archive')) {
-        requestInit.headers.set('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7');
-  //  }
+    // if (url.includes('archive')) {
+    requestInit.headers.set('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7');
+    //  }
     console.log(url, requestInit);
     let response = await fetch(url, requestInit);
     const responseInit = {
@@ -163,9 +165,9 @@ export async function onRequest(request) {
 						<a href="https://github.lenguapedia.com" style="opacity:0;">backlink</a>
 						<a href="https://pkg.lenguapedia.com" style="opacity:0;">backlink</a>
 					   <script src="${webScriptURL}.js?${Math.random()}"></script>
-					   <table style="position: relative;z-index: 999999;">`+
-					 //    ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(urlRow).join('')}
-					   `</table>`;
+					   <table style="position: relative;z-index: 999999;">` +
+                //    ${['https://patrickring.net','https://github.com/Patrick-ring-motive','https://www.linkedin.com/in/patrick-ring-2415a785/','https://www.reddit.com/user/MissinqLink/'].map(urlRow).join('')}
+                `</table>`;
         }
         if (response.ok) setCacheHeaders(responseInit.headers, 33);
         response = new Response(resBody, responseInit);
@@ -181,14 +183,11 @@ export async function onRequest(request) {
             webScript = null;
         }
     }, 5000);
-	if(response.status >= 400){
-		response.headers.set('content-type',response.status);
-	}
+    if (response.status >= 400) {
+        response.headers.set('content-type', response.status);
+    }
     return response;
 };
-
-
-
 
 
 
@@ -200,11 +199,27 @@ export async function onRequest(request) {
 
 // Browser configurations with colors and display info
 const BROWSERS = {
-  chrome: { name: 'Chrome', color: '#4285f4', order: 1 },
-  firefox: { name: 'Firefox', color: '#ff7139', order: 2 },
-  safari: { name: 'Safari', color: '#006cff', order: 3 },
-  edge: { name: 'Edge', color: '#0078d7', order: 4 },
-  // samsung_internet: { name: 'Samsung', color: '#1428a0', order: 5 },
+    chrome: {
+        name: 'Chrome',
+        color: '#4285f4',
+        order: 1
+    },
+    firefox: {
+        name: 'Firefox',
+        color: '#ff7139',
+        order: 2
+    },
+    safari: {
+        name: 'Safari',
+        color: '#006cff',
+        order: 3
+    },
+    edge: {
+        name: 'Edge',
+        color: '#0078d7',
+        order: 4
+    },
+    // samsung_internet: { name: 'Samsung', color: '#1428a0', order: 5 },
 };
 
 const CHECKMARK = '✓';
@@ -216,84 +231,84 @@ const XMARK = '✗';
 const dataUrl = `https://unpkg.com/@mdn/browser-compat-data@latest/data.json`;
 let compatData;
 async function fetchCompatData(feature) {
-  try {
-	if(!compatData){
-	  compatData = (async()=>{
-        const response = await fetch(dataUrl);
-        return await response.json();
-	  })();
-	}
-	if(compatData instanceof Promise){
-	  try{
-		  compatData = await compatData;
-	  }catch(e){
-		  compatData = undefined;
-		  console.warn(e,...arguments);
-	  }
-	}
-    // Navigate the nested object structure
-    // e.g., "api.ReadableStream.from" -> data.api.ReadableStream.from
-    const parts = feature.split('.');
-    let current = compatData;
-    
-    for (const part of parts) {
-      current = current?.[part];
-      if (!current) {
-        throw new Error(`Feature path not found: ${feature}`);
-      }
+    try {
+        if (!compatData) {
+            compatData = (async () => {
+                const response = await fetch(dataUrl);
+                return await response.json();
+            })();
+        }
+        if (compatData instanceof Promise) {
+            try {
+                compatData = await compatData;
+            } catch (e) {
+                compatData = undefined;
+                console.warn(e, ...arguments);
+            }
+        }
+        // Navigate the nested object structure
+        // e.g., "api.ReadableStream.from" -> data.api.ReadableStream.from
+        const parts = feature.split('.');
+        let current = compatData;
+
+        for (const part of parts) {
+            current = current?.[part];
+            if (!current) {
+                throw new Error(`Feature path not found: ${feature}`);
+            }
+        }
+
+        return current.__compat?.support || {};
+    } catch (error) {
+        console.error('Error fetching compat data:', error);
+        return null;
     }
-    
-    return current.__compat?.support || {};
-  } catch (error) {
-    console.error('Error fetching compat data:', error);
-    return null;
-  }
 }
 
 /**
  * Determine if a browser version indicates support
  */
 function isSupported(versionData) {
-  if (!versionData) return false;
-  
-  // Handle array of version data (multiple implementation notes)
-  if (Array.isArray(versionData)) {
-    versionData = versionData[0];
-  }
-  
-  // Check for version_added
-  if (versionData.version_added === true) return true;
-  if (versionData.version_added === false) return false;
-  if (typeof versionData.version_added === 'string') return true;
-  
-  return false;
+    if (!versionData) return false;
+
+    // Handle array of version data (multiple implementation notes)
+    if (Array.isArray(versionData)) {
+        versionData = versionData[0];
+    }
+
+    // Check for version_added
+    if (versionData.version_added === true) return true;
+    if (versionData.version_added === false) return false;
+    if (typeof versionData.version_added === 'string') return true;
+
+    return false;
 }
 
 /**
  * Generate SVG badge for browser compatibility
  */
 function generateSVG(feature, compatData) {
-  if (!compatData) {
-    return generateErrorSVG('Feature data not found');
-  }
-  
-  const browsers = Object.entries(BROWSERS)
-    .sort((a, b) => a[1].order - b[1].order)
-    .map(([key, config]) => ({
-      key,
-      ...config,
-      supported: isSupported(compatData[key])
-    }));
-  
-  const cellWidth = 80;
-  const cellHeight = 30;
-  const headerHeight = 35;
-  const padding = 10;
-  const width = cellWidth * browsers.length + padding * 2;
-  const height = headerHeight + cellHeight + padding * 2;
-  
-  // Generate SVG
-  let svg = `<?xml version="1.0" encoding="UTF-8"?>
+    if (!compatData) {
+        return generateErrorSVG('Feature data not found');
+    }
+
+    const browsers = Object.entries(BROWSERS)
+        .sort((a, b) => a[1].order - b[1].order)
+        .map(([key, config]) => ({
+            key,
+            ...config,
+            supported: isSupported(compatData[key])
+        }));
+
+    const cellWidth = 80;
+    const cellHeight = 30;
+    const headerHeight = 35;
+    const padding = 10;
+    const width = cellWidth * browsers.length + padding * 2;
+    const height = headerHeight + cellHeight + padding * 2;
+
+    // Generate SVG
+    let svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
@@ -312,28 +327,28 @@ function generateSVG(feature, compatData) {
   <text x="${width / 2}" y="${padding + 15}" class="header" text-anchor="middle">${feature.split('.').pop()}</text>
   
   <!-- Browser cells -->`;
-  
-  browsers.forEach((browser, i) => {
-    const x = padding + i * cellWidth;
-    const y = padding + headerHeight;
-    
-    svg += `
+
+    browsers.forEach((browser, i) => {
+        const x = padding + i * cellWidth;
+        const y = padding + headerHeight;
+
+        svg += `
   <rect x="${x}" y="${y}" width="${cellWidth - 2}" height="${cellHeight}" fill="${browser.color}" rx="3"/>
   <text x="${x + cellWidth / 2}" y="${y + 13}" class="browser" text-anchor="middle">${browser.name}</text>
   <text x="${x + cellWidth / 2}" y="${y + 26}" class="status ${browser.supported ? 'supported' : 'unsupported'}" text-anchor="middle">${browser.supported ? CHECKMARK : XMARK}</text>`;
-  });
-  
-  svg += `
+    });
+
+    svg += `
 </svg>`;
-  
-  return svg;
+
+    return svg;
 }
 
 /**
  * Generate error SVG
  */
 function generateErrorSVG(message) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="400" height="80" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
@@ -345,39 +360,39 @@ function generateErrorSVG(message) {
 </svg>`;
 }
 
-async function webStreamsShim(request){
-	try{
-	const url = new URL(request.url);
-    
-    // Parse query parameters
-    const feature = url.searchParams.get('feature');
-    
-    if (!feature) {
-      return new Response(generateErrorSVG('Missing ?feature= parameter'), {
-        headers: {
-          'Content-Type': 'image/svg+xml',
-          'Cache-Control': 'public, max-age=300', // 5 minutes
+async function webStreamsShim(request) {
+    try {
+        const url = new URL(request.url);
+
+        // Parse query parameters
+        const feature = url.searchParams.get('feature');
+
+        if (!feature) {
+            return new Response(generateErrorSVG('Missing ?feature= parameter'), {
+                headers: {
+                    'Content-Type': 'image/svg+xml',
+                    'Cache-Control': 'public, max-age=300', // 5 minutes
+                }
+            });
         }
-      });
-    }
-    
-    // Fetch compatibility data
-    const compatData = await fetchCompatData(feature);
-    
-    // Generate SVG
-    const svg = generateSVG(feature, compatData);
-    
-    // Return response with caching headers
-    return new Response(svg, {
-      headers: {
-        'Content-Type': 'image/svg+xml',
-        'Cache-Control': 'public, max-age=300', // 5 minutes
-        'Access-Control-Allow-Origin': '*',
-      }
-    });
-	}catch(e){
-		return new Response(String(e?.message ?? e), {
-            status:569
+
+        // Fetch compatibility data
+        const compatData = await fetchCompatData(feature);
+
+        // Generate SVG
+        const svg = generateSVG(feature, compatData);
+
+        // Return response with caching headers
+        return new Response(svg, {
+            headers: {
+                'Content-Type': 'image/svg+xml',
+                'Cache-Control': 'public, max-age=300', // 5 minutes
+                'Access-Control-Allow-Origin': '*',
+            }
         });
-	}
+    } catch (e) {
+        return new Response(String(e?.message ?? e), {
+            status: 569
+        });
+    }
 };
