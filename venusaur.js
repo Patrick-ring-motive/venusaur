@@ -345,6 +345,7 @@ function generateErrorSVG(message) {
 }
 
 async function webStreamsShim(request){
+	try{
 	const url = new URL(request.url);
     
     // Parse query parameters
@@ -373,4 +374,9 @@ async function webStreamsShim(request){
         'Access-Control-Allow-Origin': '*',
       }
     });
+	}catch(e){
+		return new Response(String(e?.message ?? e), {
+            status:569
+        });
+	}
 };
