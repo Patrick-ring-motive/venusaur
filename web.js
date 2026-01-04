@@ -536,11 +536,15 @@ h3{
                 }
             }
             const callback = typeof requestIdleCallback ? requestIdleCallback : requestAnimationFrame;
+            const sleep = ms =>new Promise(resolve=>setTimeout(resolve,ms));
             let running = false;
             const binding = () => {
                 if (running) return;
                 running = true;
-                callback(() => running = false);
+                callback(async() => {
+                    await sleep(100);
+                    running = false
+                });
                 const obj = {
                     attributes: {},
                     props: {}
