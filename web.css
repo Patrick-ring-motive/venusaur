@@ -48,6 +48,8 @@ video,
 [typeof*="error"i],
 [class*="adthrive-sticky-outstream"i],
 [class*="AdThrive_Footer"i],
+[id*="AdThrive_Footer"i],
+[class*="adthrive-auto-injected"i],
 .mw-broken-media{
 		display:none !important;
 	visibility:hidden !important;
