@@ -111,7 +111,7 @@
         const links = [...document.querySelectorAll(`a[href*="File"]:not([target="_blank"])`)];
         for (const link of links) {
             link.setAttribute('target', '_blank');
-            link.outerHTML = String(link.outerHTML):
+            link.outerHTML = String(link.outerHTML);
         }
     }, 100);
 })();
