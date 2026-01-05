@@ -1,5 +1,15 @@
 (()=>{
-
+ (globalThis.window ?? {}).DOMInteractive = (fn) => {
+        fn ??= () => { };
+        if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
+            return fn();
+        }
+        return new Promise((resolve) => {
+            (globalThis.document || globalThis).addEventListener("DOMContentLoaded", () => {
+                try { resolve(fn()); } catch (e) { resolve(e); }
+            });
+        });
+    };
     DOMInteractive(async () => {
         const Str = x => {
             try {
