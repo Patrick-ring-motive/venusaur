@@ -74,13 +74,13 @@
         }
 
         function containsJapanese(text) {
-            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;///[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
+            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/;///[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
             return japaneseRegex.test(text);
         }
-        const jpRe = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]+/g;
+        const jpRe = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+/g;
         function containsEnglishAndJapanese(text) {
             const englishRegex = /[A-Za-z]/;
-            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;
+            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/;
 
             return englishRegex.test(text) && japaneseRegex.test(text);
         }
