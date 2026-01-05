@@ -34,21 +34,23 @@
 
         const fetchText = async (...args) => (await lfetch(...args)).text();
 
+         const langCache = {};
         async function fixText(text) {
             if (localStorage.getItem(text)) return localStorage.getItem(text);
+            if(langCache[text])return langCache[text];
             const payload = { text };
             payload.pass = 'one-way';
             payload.lang = 'ja';
-            const out = await (fetchText(`${url}`, {
+            langCache[text] = await (fetchText(`${url}`, {
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
             }));
+            const out = await langCache[text];
             if (out) {
                 localStorage.setItem(text, out);
             }
             return out;
         }
-
         async function fixText2(text) {
             if (localStorage.getItem(text)) return localStorage.getItem(text);
             const payload = { text };
