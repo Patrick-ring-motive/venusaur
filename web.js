@@ -1,4 +1,5 @@
 (()=>{
+ const lfetch = fetch;
  (globalThis.window ?? {}).DOMInteractive = (fn) => {
         fn ??= () => { };
         if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
@@ -31,7 +32,7 @@
         const url = 'https://script.google.com/macros/s/AKfycbwcvr8w_E14DFv6IGVSjxbQCn43cbY6Tu96N30G_1HvcisZu2iy-gVqsi_YLK6aFL4Ktw/exec';
 
 
-        const fetchText = async (...args) => (await fetch(...args)).text();
+        const fetchText = async (...args) => (await lfetch(...args)).text();
 
         async function fixText(text) {
             if (localStorage.getItem(text)) return localStorage.getItem(text);
