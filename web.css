@@ -46,6 +46,14 @@ h1,h2,h3,h4,h5,h6,th,thead,header{
 iframe,
 video,
 [typeof*="error"i],
+[class*="adthrive-sticky-outstream"i],
+[class*="AdThrive_Footer"i],
 .mw-broken-media{
-	display:none !important;
+		display:none !important;
+	visibility:hidden !important;
+	content-visibility: hidden !important;
+	opacity: 0 !important;
+	color: rgba(0,0,0,0) !important;
+	background-color: rgba(0,0,0,0) !important;
+	border-color: rgba(0,0,0,0) !important;
 }
