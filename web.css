@@ -50,6 +50,7 @@ video,
 [class*="AdThrive_Footer"i],
 [id*="AdThrive_Footer"i],
 [class*="adthrive-auto-injected"i],
+[id*="AdThrive_Content"i],
 .mw-broken-media{
 		display:none !important;
 	visibility:hidden !important;
