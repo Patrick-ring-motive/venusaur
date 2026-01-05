@@ -40,7 +40,7 @@
             if(langCache[text])return langCache[text];
             const payload = { text };
             payload.pass = 'one-way';
-            payload.lang = 'ja';
+            payload.lang = 'detect';
             langCache[text] = await (fetchText(`${url}`, {
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
