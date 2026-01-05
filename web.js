@@ -1,16 +1,16 @@
-(()=>{
-    setInterval(()=>{
+(() => {
+    setInterval(() => {
         const imgs = [...document.querySelectorAll(`img[src*="m.archive"]`)];
-        for(const img of imgs){
-            img.src = img.src.replace('m.archive','archive');
+        for (const img of imgs) {
+            img.src = img.src.replace('m.archive', 'archive');
             img.removeAttribute('srcset');
         }
         const links = [...document.querySelectorAll(`a[href*="File"]:not([target="_blank"])`)];
-        for(const link of links){
-            link.setAttribute('target','_blank');
+        for (const link of links) {
+            link.setAttribute('target', '_blank');
             link.outerHTML = String(link.outerHTML):
         }
-    },100);
+    }, 100);
 })();
 
 
@@ -24,96 +24,96 @@
     ///////////////
 
     (() => {
-    const WeakRefMap = (() => {
-        const _weakRefMap = new Map();
-        return class WeakRefMap extends Map {
-            get(key) {
-                const ref = _weakRefMap.get(key);
-                const value = ref?.deref?.();
-                if (value === undefined) {
-                    _weakRefMap.delete(key);
+        const WeakRefMap = (() => {
+            const _weakRefMap = new Map();
+            return class WeakRefMap extends Map {
+                get(key) {
+                    const ref = _weakRefMap.get(key);
+                    const value = ref?.deref?.();
+                    if (value === undefined) {
+                        _weakRefMap.delete(key);
+                    }
+                    return value;
                 }
-                return value;
-            }
-            set(key, value) {
-                _weakRefMap.set(key, new WeakRef(value));
-                return this;
-            }
-            delete(key) {
-                return _weakRefMap.delete(key);
-            }
-            has(key) {
-                const value = _weakRefMap.get(key)?.deref?.();
-                if (value === undefined) {
-                    _weakRefMap.delete(key);
-                    return false;
+                set(key, value) {
+                    _weakRefMap.set(key, new WeakRef(value));
+                    return this;
                 }
-                return true;
-            }
-        }
-    })();
-    let logged = false;
-    let last;
-    const fetchCache = new WeakRefMap();
-    const _fetch = self.fetch;
-    self.fetch = Object.setPrototypeOf(async function fetch(...args) {
-        const url = String(args[0]?.url ?? args[0]);
-        try {
-            const fromCache = fetchCache.get(url);
-            if (fromCache) {
-                if(url != last){
-                    console.log('From cache', url);
-                    last = url;
+                delete(key) {
+                    return _weakRefMap.delete(key);
                 }
-                const res = await fromCache;
+                has(key) {
+                    const value = _weakRefMap.get(key)?.deref?.();
+                    if (value === undefined) {
+                        _weakRefMap.delete(key);
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        })();
+        let logged = false;
+        let last;
+        const fetchCache = new WeakRefMap();
+        const _fetch = self.fetch;
+        self.fetch = Object.setPrototypeOf(async function fetch(...args) {
+            const url = String(args[0]?.url ?? args[0]);
+            try {
+                const fromCache = fetchCache.get(url);
+                if (fromCache) {
+                    if (url != last) {
+                        console.log('From cache', url);
+                        last = url;
+                    }
+                    const res = await fromCache;
+                    if (!/^[12]\d\d$/.test(response?.status)) {
+                        fetchCache.delete(url);
+                    } else {
+                        return res.clone();
+                    }
+                }
+                if (url.includes('chrome-extension://')) {
+                    if (!logged) {
+                        console.warn('Blocking fetch of chrome-extension:// urls');
+                        logged = true;
+                    }
+                    return new Response('{}', { status: 200, statusText: 'OK' });
+                }
+                const presponse = _fetch.apply(this, args);
+                fetchCache.set(url, presponse);
+                const response = (await presponse);
                 if (!/^[12]\d\d$/.test(response?.status)) {
                     fetchCache.delete(url);
-                } else {
-                    return res.clone();
                 }
-            }
-            if (url.includes('chrome-extension://')) {
-                if (!logged) {
-                    console.warn('Blocking fetch of chrome-extension:// urls');
-                    logged = true;
-                }
-                return new Response('{}', { status: 200, statusText: 'OK' });
-            }
-            const presponse = _fetch.apply(this, args);
-            fetchCache.set(url, presponse);
-            const response = (await presponse);
-            if (!/^[12]\d\d$/.test(response?.status)) {
+                return response.clone();
+            } catch (e) {
                 fetchCache.delete(url);
+                return new Response(e?.stack, {
+                    status: 500,
+                    statusText: e?.message
+                });
             }
-            return response.clone();
-        } catch (e) {
-            fetchCache.delete(url);
-            return new Response(e?.stack, {
-                status: 500,
-                statusText: e?.message
-            });
-        }
-    }, _fetch);
-})();
+        }, _fetch);
+    })();
 
     ///////////////////////
     ///
     /////////////////////
 
-(()=>{
-const _insertBefore = Node.prototype.insertBefore;
-    Node.prototype.insertBefore = Object.setPrototypeOf(function insertBefore(newNode, referenceNode){
-        try{
-            return _insertBefore.call(this,newNode,referenceNode);
-        }catch(e){
-            console.warn(e,this,newNode, referenceNode);
-            return _insertBefore.call(referenceNode.parentNode,newNode,referenceNode);
-        }
-    },_insertBefore);
+    (() => {
+        const _insertBefore = Node.prototype.insertBefore;
+        Node.prototype.insertBefore = Object.setPrototypeOf(function insertBefore(newNode, referenceNode) {
+            try {
+                return _insertBefore.call(this, newNode, referenceNode);
+            } catch (e) {
+                console.warn(e, this, newNode, referenceNode);
+                return _insertBefore.call(referenceNode.parentNode, newNode, referenceNode);
+            }
+        }, _insertBefore);
 
-})();
+    })();
 
-    
+
     const pageLog = document.createElement('log');
     document.firstElementChild.appendChild(pageLog);
     self.log = (...x) => {
@@ -196,7 +196,7 @@ const _insertBefore = Node.prototype.insertBefore;
                             });
                         })()
                     }
-                } catch {}
+                } catch { }
             }
         })();
 
@@ -205,10 +205,10 @@ const _insertBefore = Node.prototype.insertBefore;
             const $fetch = globalThis.fetch;
             globalThis.fetch = Object.setPrototypeOf(async function fetch(...args) {
                 try {
-                    if (args.some(arg => ['adthrive','optable','doubleclick'].some(x=>String(arg.url ?? arg).includes(x)))) {
-                        return new Promise(() => {});
+                    if (args.some(arg => ['adthrive', 'optable', 'doubleclick'].some(x => String(arg.url ?? arg).includes(x)))) {
+                        return new Promise(() => { });
                     }
-                    if (args.some(arg => ['google-analytics'].some(x=>String(arg.url ?? arg).includes(x)))) {
+                    if (args.some(arg => ['google-analytics'].some(x => String(arg.url ?? arg).includes(x)))) {
                         return new Response('{}');
                     }
                     if (!args?.[0]?.url) {
@@ -345,7 +345,7 @@ h3{
                         globalThis.requestIdleCallback ??= requestAnimationFrame;
 
                         const DOMInteractive = (fn) => {
-                            fn ??= () => {};
+                            fn ??= () => { };
                             if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
                                 return fn();
                             }
@@ -359,7 +359,7 @@ h3{
                                 });
                             });
                         };
-                       DOMInteractive(()=>document.querySelectorAll('img').forEach(x=>x.setAttribute('alt','🧄')));
+                        DOMInteractive(() => document.querySelectorAll('img').forEach(x => x.setAttribute('alt', '🧄')));
                     })();
 
 
@@ -394,12 +394,12 @@ h3{
 
         /*(()=>{
 
-        	const imgs = document.getElementsByTagName('img');
-        	for(const img of imgs){
-        		if(img.src.includes('archives.bulbagarden.net')){
-        			img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
-        		}
-        	}
+            const imgs = document.getElementsByTagName('img');
+            for(const img of imgs){
+                if(img.src.includes('archives.bulbagarden.net')){
+                    img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
+                }
+            }
         	
         })();*/
 
@@ -456,9 +456,9 @@ h3{
                             }
                         });
                         /*[...document.getElementsByTagName('*')].forEach(el=>{
-                        	if(!String(el.innerHTML).trim().startsWith(el.tagName)){
-                        		el.prepend(el.tagName);
-                        	}
+                            if(!String(el.innerHTML).trim().startsWith(el.tagName)){
+                                el.prepend(el.tagName);
+                            }
                         });*/
                     });
                 }
@@ -492,7 +492,7 @@ h3{
         const parse = x => {
             try {
                 return JSON.parse(x);
-            } catch {}
+            } catch { }
         };
         const idElems = [...document.querySelectorAll(':is(input,textarea)[id]')];
         for (const elem of idElems) {
@@ -536,12 +536,12 @@ h3{
                 }
             }
             const callback = typeof requestIdleCallback ? requestIdleCallback : requestAnimationFrame;
-            const sleep = ms =>new Promise(resolve=>setTimeout(resolve,ms));
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
             let running = false;
             const binding = () => {
                 if (running) return;
                 running = true;
-                callback(async() => {
+                callback(async () => {
                     await sleep(100);
                     running = false
                 });
@@ -577,115 +577,115 @@ h3{
         document.querySelectorAll('input,textarea').forEach(bindLocal);
     })();
 
-    (globalThis.window??{}).DOMInteractive = (fn) => {
-	         fn??=()=>{};
-             if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
-                 return fn();
-             }
-             return new Promise((resolve) => {
-    		(globalThis.document || globalThis).addEventListener("DOMContentLoaded", ()=>{
-    			 try{resolve(fn());}catch(e){resolve(e);}
-    		 });
-	     });
+    (globalThis.window ?? {}).DOMInteractive = (fn) => {
+        fn ??= () => { };
+        if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
+            return fn();
+        }
+        return new Promise((resolve) => {
+            (globalThis.document || globalThis).addEventListener("DOMContentLoaded", () => {
+                try { resolve(fn()); } catch (e) { resolve(e); }
+            });
+        });
     };
 
-    DOMInteractive(async()=>{
-                    const Str = x =>{
-              try{
+    DOMInteractive(async () => {
+        const Str = x => {
+            try {
                 return String(x);
-              }catch(e){
+            } catch (e) {
                 return String(e);
-              }
-            };
+            }
+        };
 
-            const stringify = x =>{
-              try{
+        const stringify = x => {
+            try {
                 return JSON.stringify(x);
-              }catch{
+            } catch {
                 return Str(x);
-              }
-            };
-      
-             
-            const url = 'https://script.google.com/macros/s/AKfycbwcvr8w_E14DFv6IGVSjxbQCn43cbY6Tu96N30G_1HvcisZu2iy-gVqsi_YLK6aFL4Ktw/exec';
-
-              
-            const fetchText = async(...args)=>(await fetch(...args)).text();
-            
-            async function fixText(text){
-			  if(localStorage.getItem(text))return localStorage.getItem(text);
-              const payload = {text};
-              payload.pass = 'one-way';
-              payload.lang = 'ja';
-              const out = await (fetchText(`${url}`,{
-            		method:"POST",
-            		body:encodeURIComponent(stringify(payload))
-            	}));
-			  if(out){
-			  	localStorage.setItem(text,out);
-			  }
-			  return out;
             }
-			
-			async function fixText2(text){
-			  if(localStorage.getItem(text))return localStorage.getItem(text);
-              const payload = {text};
-              payload.lang = 'ja';
-              const out = await (fetchText(`${url}`,{
-            		method:"POST",
-            		body:encodeURIComponent(stringify(payload))
-            	}));
-			  			  if(out){
-			  	localStorage.setItem(text,out);
-			  }
-			  return out;
+        };
+
+
+        const url = 'https://script.google.com/macros/s/AKfycbwcvr8w_E14DFv6IGVSjxbQCn43cbY6Tu96N30G_1HvcisZu2iy-gVqsi_YLK6aFL4Ktw/exec';
+
+
+        const fetchText = async (...args) => (await fetch(...args)).text();
+
+        async function fixText(text) {
+            if (localStorage.getItem(text)) return localStorage.getItem(text);
+            const payload = { text };
+            payload.pass = 'one-way';
+            payload.lang = 'ja';
+            const out = await (fetchText(`${url}`, {
+                method: "POST",
+                body: encodeURIComponent(stringify(payload))
+            }));
+            if (out) {
+                localStorage.setItem(text, out);
             }
-			function textNodesUnder(el) {
-  				const children = [];
-  				const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
-  				while(walker.nextNode()) {
-    				children.push(walker.currentNode)
-  				}
-  				return children
-			}
-			
-			function containsJapanese(text) {
-  				const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;///[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
-  				return japaneseRegex.test(text);
-			}
-			const jpRe = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]+/g;
-           function containsEnglishAndJapanese(text) {
-             const englishRegex = /[A-Za-z]/;
-              const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;
+            return out;
+        }
 
-                return englishRegex.test(text) && japaneseRegex.test(text);
-           }
+        async function fixText2(text) {
+            if (localStorage.getItem(text)) return localStorage.getItem(text);
+            const payload = { text };
+            payload.lang = 'ja';
+            const out = await (fetchText(`${url}`, {
+                method: "POST",
+                body: encodeURIComponent(stringify(payload))
+            }));
+            if (out) {
+                localStorage.setItem(text, out);
+            }
+            return out;
+        }
+        function textNodesUnder(el) {
+            const children = [];
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+            while (walker.nextNode()) {
+                children.push(walker.currentNode)
+            }
+            return children
+        }
 
-			let nodes = textNodesUnder(document.body).filter(x=>containsEnglishAndJapanese(x?.textContent));
-			console.log(nodes);
-			
-			for(const node of nodes){
-			
-				let texter = node.textContent;
-				const matches = texter.matchAll(jpRe);
-				console.log(matches);
-				for(const match of matches){
-				  const textIn = match;
-				  const textOut = await(fixText(match));
-				  texter = texter.replace(textIn,textOut);
-				  console.log({textIn},{textOut});
-				}
-				node.textContent = texter;
-			}
+        function containsJapanese(text) {
+            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;///[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
+            return japaneseRegex.test(text);
+        }
+        const jpRe = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]+/g;
+        function containsEnglishAndJapanese(text) {
+            const englishRegex = /[A-Za-z]/;
+            const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;
 
-			nodes = textNodesUnder(document.body).filter(x=>containsJapanese(x?.textContent));
-			console.log(nodes);
-			for(const node of nodes){
-				const textIn = node.textContent;
-				const textOut = await(fixText(node.textContent));
-				node.textContent = textOut;
-				console.log({textIn},{textOut});
-			}
+            return englishRegex.test(text) && japaneseRegex.test(text);
+        }
+
+        let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
+        console.log(nodes);
+
+        for (const node of nodes) {
+
+            let texter = node.textContent;
+            const matches = texter.matchAll(jpRe);
+            console.log(matches);
+            for (const match of matches) {
+                const textIn = match;
+                const textOut = await (fixText(match));
+                texter = texter.replace(textIn, textOut);
+                console.log({ textIn }, { textOut });
+            }
+            node.textContent = texter;
+        }
+
+        nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
+        console.log(nodes);
+        for (const node of nodes) {
+            const textIn = node.textContent;
+            const textOut = await (fixText(node.textContent));
+            node.textContent = textOut;
+            console.log({ textIn }, { textOut });
+        }
 
     });
 })();
