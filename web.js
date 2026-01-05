@@ -576,4 +576,116 @@ h3{
 
         document.querySelectorAll('input,textarea').forEach(bindLocal);
     })();
+
+    (globalThis.window??{}).DOMInteractive = (fn) => {
+	         fn??=()=>{};
+             if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
+                 return fn();
+             }
+             return new Promise((resolve) => {
+    		(globalThis.document || globalThis).addEventListener("DOMContentLoaded", ()=>{
+    			 try{resolve(fn());}catch(e){resolve(e);}
+    		 });
+	     });
+    };
+
+    DOMInteractive(async()=>{
+                    const Str = x =>{
+              try{
+                return String(x);
+              }catch(e){
+                return String(e);
+              }
+            };
+
+            const stringify = x =>{
+              try{
+                return JSON.stringify(x);
+              }catch{
+                return Str(x);
+              }
+            };
+      
+             
+            const url = 'https://script.google.com/macros/s/AKfycbwcvr8w_E14DFv6IGVSjxbQCn43cbY6Tu96N30G_1HvcisZu2iy-gVqsi_YLK6aFL4Ktw/exec';
+
+              
+            const fetchText = async(...args)=>(await fetch(...args)).text();
+            
+            async function fixText(text){
+			  if(localStorage.getItem(text))return localStorage.getItem(text);
+              const payload = {text};
+              payload.pass = 'one-way';
+              payload.lang = 'ja';
+              const out = await (fetchText(`${url}`,{
+            		method:"POST",
+            		body:encodeURIComponent(stringify(payload))
+            	}));
+			  if(out){
+			  	localStorage.setItem(text,out);
+			  }
+			  return out;
+            }
+			
+			async function fixText2(text){
+			  if(localStorage.getItem(text))return localStorage.getItem(text);
+              const payload = {text};
+              payload.lang = 'ja';
+              const out = await (fetchText(`${url}`,{
+            		method:"POST",
+            		body:encodeURIComponent(stringify(payload))
+            	}));
+			  			  if(out){
+			  	localStorage.setItem(text,out);
+			  }
+			  return out;
+            }
+			function textNodesUnder(el) {
+  				const children = [];
+  				const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+  				while(walker.nextNode()) {
+    				children.push(walker.currentNode)
+  				}
+  				return children
+			}
+			
+			function containsJapanese(text) {
+  				const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;///[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/;
+  				return japaneseRegex.test(text);
+			}
+			const jpRe = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]+/g;
+           function containsEnglishAndJapanese(text) {
+             const englishRegex = /[A-Za-z]/;
+              const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\uFF65-\uFF9F\u4E00-\u9FFF\u3400-\u4DBF]/;
+
+                return englishRegex.test(text) && japaneseRegex.test(text);
+           }
+
+			let nodes = textNodesUnder(document.body).filter(x=>containsEnglishAndJapanese(x?.textContent));
+			console.log(nodes);
+			
+			for(const node of nodes){
+			
+				let texter = node.textContent;
+				const matches = texter.matchAll(jpRe);
+				console.log(matches);
+				for(const match of matches){
+				  const textIn = match;
+				  const textOut = await(fixText(match));
+				  texter = texter.replace(textIn,textOut);
+				  console.log({textIn},{textOut});
+				}
+				node.textContent = texter;
+			}
+
+			nodes = textNodesUnder(document.body).filter(x=>containsJapanese(x?.textContent));
+			console.log(nodes);
+			for(const node of nodes){
+				const textIn = node.textContent;
+				const textOut = await(fixText(node.textContent));
+				node.textContent = textOut;
+				console.log({textIn},{textOut});
+			}
+
+    });
 })();
