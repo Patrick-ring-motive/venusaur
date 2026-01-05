@@ -85,30 +85,49 @@
             return englishRegex.test(text) && japaneseRegex.test(text);
         }
 
-        let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
-        console.log(nodes);
+     
+     const Q = fn => {
+                try {
+                    return fn?.()
+                } catch {}
+            };
+        console.log(new Error().stack);
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const postTask = (callback, options = {}) => scheduler.postTask(callback, {
+            priority: "background",
+            ...options
+        });
+        const delay = (fn, time = 1) => setTimeout(fn, time);
+        const docSelectAll = query => Q(() => document.querySelectorAll(query)) ?? document.createElement('NodeList').childNodes;
+        const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
+        const nextIdle = () => new Promise(resolve => callback(resolve));
 
-        for (const node of nodes) {
+        while(true){
+            await sleep(100);
+            await nextIdle();
+            let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
 
-            let texter = node.textContent;
-            const matches = texter.matchAll(jpRe);
-            console.log(matches);
-            for (const match of matches) {
-                const textIn = match;
-                const textOut = await (fixText(match));
-                texter = texter.replace(textIn, textOut);
+            for (const node of nodes) {
+                let texter = node.textContent;
+                const matches = texter.matchAll(jpRe);
+                console.log(matches);
+                for (const match of matches) {
+                    const textIn = match;
+                    const textOut = await (fixText(match));
+                    texter = texter.replace(textIn, textOut);
+                    console.log({ textIn }, { textOut });
+                }
+                node.textContent = texter;
+            }
+
+            nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
+            console.log(nodes);
+            for (const node of nodes) {
+                const textIn = node.textContent;
+                const textOut = await (fixText(node.textContent));
+                node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
             }
-            node.textContent = texter;
-        }
-
-        nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
-        console.log(nodes);
-        for (const node of nodes) {
-            const textIn = node.textContent;
-            const textOut = await (fixText(node.textContent));
-            node.textContent = textOut;
-            console.log({ textIn }, { textOut });
         }
 
     });
