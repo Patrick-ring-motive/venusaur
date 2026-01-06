@@ -201,7 +201,7 @@
                         last = url;
                     }
                     const res = await fromCache;
-                    if (!/^[12]\d\d$/.test(response?.status)) {
+                    if (!/^[12]\d\d$/.test(res?.status)) {
                         fetchCache.delete(url);
                     } else {
                         return res.clone();
