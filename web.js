@@ -60,7 +60,7 @@
             const payload = { text };
             payload.pass = 'one-way';
             payload.lang = 'detect';
-            langCache[text] = await (fetchText(`${url}`, {
+            langCache[text] = (fetchText(`${url}`, {
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
             }));
