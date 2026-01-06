@@ -30,7 +30,11 @@
             });
         });
     };
-    DOMInteractive(async () => {
+ (async()=>{
+    await Promise.race([
+     DOMInteractive(),
+     sleep(1000)
+    ]);
         const Str = x => {
             try {
                 return String(x);
@@ -136,7 +140,7 @@
           console.warn(e);
         }
        }
-    });
+    })();
 })();
 
 (async() => {
