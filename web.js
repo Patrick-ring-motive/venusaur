@@ -1,6 +1,6 @@
+
 (async()=>{
-Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
- [...document.querySelectorAll('iframe,frame,object,embed,[src*="adthrive"]')].map(x=>x.remove());
+
  const Q = fn => {
                 try {
                     return fn?.()
@@ -15,7 +15,8 @@ Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
         const delay = (fn, time = 1) => setTimeout(fn, time);
         const docSelectAll = query => Q(() => document.querySelectorAll(query)) ?? document.createElement('NodeList').childNodes;
         const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
-        const nextIdle = () => new Promise(resolve => callback(resolve));
+    globalThis.requestIdleCallback ??= requestAnimationFrame;
+        const nextIdle = () => new Promise(resolve => requestIdleCallback(resolve));
 
   (globalThis.window ?? {}).DOMComplete = (fn) => {
         fn ??= () => { };
@@ -23,13 +24,15 @@ Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
             return fn();
         }
         return new Promise((resolve) => {
-            (globalThis.document || globalThis).addEventListener("load", () => {
+            window.addEventListener("load", () => {
                 try { resolve(fn()); } catch (e) { resolve(e); }
             });
         });
     };
  await DOMComplete();
  await nextIdle();
+    Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
+ [...document.querySelectorAll('iframe,frame,object,embed,[src*="adthrive"]')].map(x=>x.remove());
 (()=>{
  const lfetch = fetch;
  (globalThis.window ?? {}).DOMInteractive = (fn) => {
@@ -122,7 +125,7 @@ Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
             return englishRegex.test(text) && japaneseRegex.test(text);
         }
 
-     
+
         while(true){
          try{
             await sleep(100);
@@ -581,7 +584,7 @@ h3{
                     img.src = img.src.replace('archives.bulbagarden.net','archives.lenguapedia.com');
                 }
             }
-        	
+
         })();*/
 
 
