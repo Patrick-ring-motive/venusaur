@@ -1,6 +1,6 @@
 (async()=>{
 Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
- [...document.querySelectorAll('iframe,frame,object,embed')].map(x=>x.remove());
+ [...document.querySelectorAll('iframe,frame,object,embed,[src*="adthrive"]')].map(x=>x.remove());
  const Q = fn => {
                 try {
                     return fn?.()
