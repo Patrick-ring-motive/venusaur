@@ -295,7 +295,7 @@
                 }
             };
             // blocks is a list of strings we intend to filter out
-            const blocks = ["adthrive","gumgum","raptive"];
+            const blocks = ["adthrive","gumgum","raptive","googlesyndication"];
             // Create a closure map to store instance properties that are in accessible to external viewers
             // use WeakMap if available for better memory management but regular map also works
             const $Map = self?.WeakMap ?? Map;
