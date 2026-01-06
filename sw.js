@@ -3,6 +3,7 @@
     navigator.serviceWorker.register(document.currentScript?.src ?? new Error().stack.match(/(https?:\/\/[^)\s]+)/)[1].replace(/:\d+(:\d+)?$/, ''));
 })();
 (() => {
+    const blocks = ["adthrive","doubleclick","gumgum"];
     if (typeof Window !== 'undefined') return;
     const CACHE_NAME = 'app-cache-v1';
     self.addEventListener('install', event => self.skipWaiting());
@@ -51,7 +52,9 @@
         }
         const fetchEvent = ((async () => {
             try {
-                
+                if(blocks.some(x=>event.request.url.includes(x)){
+                    return new Response(null,{status:400,statusText:'cheese'});
+                }
                 let responded = false;
                 if(!test){
                     test = serviceFetch('https://archives.lenguapedia.com/media/upload/thumb/2/27/0004Charmander.png/55px-0004Charmander.png');
