@@ -516,7 +516,7 @@ h3{
                      (async()=>{
                         await Promise.race([
                          DOMInteractive(),
-                         sleep(1000);
+                         sleep(1000)
                         ]);
                         document.querySelectorAll('img').forEach(x => x.setAttribute('alt', '🧄'));
                      })();
