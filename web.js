@@ -103,6 +103,7 @@
         const nextIdle = () => new Promise(resolve => callback(resolve));
 
         while(true){
+         try{
             await sleep(100);
             await nextIdle();
             let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
@@ -128,8 +129,10 @@
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
             }
+        }catch(e){
+          console.warn(e);
         }
-
+        }
     });
 })();
 
