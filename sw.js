@@ -43,8 +43,9 @@
     let test;
     self.addEventListener('fetch', event => {
         if(!/\.(php|png|jpg|jpeg|svg)/i.test(event.request.url)){
-                    return;
-                }
+            event.respondWith(serviceFetch(event.request));
+            return;
+        }
         if(event.request.url.includes('m.archive')){
             event.request = new Request(event.request.url.replace('m.archive','archive'),event.request);
         }
