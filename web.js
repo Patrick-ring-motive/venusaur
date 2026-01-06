@@ -379,7 +379,7 @@
             globalThis.fetch = Object.setPrototypeOf(async function fetch(...args) {
                 try {
                     if (args.some(arg => ['adthrive', 'optable', 'doubleclick'].some(x => String(arg.url ?? arg).includes(x)))) {
-                        return new Promise(() => { });
+                        return new Response(null,{status:400});
                     }
                     if (args.some(arg => ['google-analytics'].some(x => String(arg.url ?? arg).includes(x)))) {
                         return new Response('{}');
