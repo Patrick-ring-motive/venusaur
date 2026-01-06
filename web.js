@@ -135,7 +135,7 @@
         }catch(e){
           console.warn(e);
         }
-        }
+       }
     });
 })();
 
