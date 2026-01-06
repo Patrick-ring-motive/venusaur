@@ -30,7 +30,18 @@
             });
         });
     };
- await DOMInteractive();
+  (globalThis.window ?? {}).DOMComplete = (fn) => {
+        fn ??= () => { };
+        if (globalThis.document?.readyState == 'complete') {
+            return fn();
+        }
+        return new Promise((resolve) => {
+            (globalThis.document || globalThis).addEventListener("load", () => {
+                try { resolve(fn()); } catch (e) { resolve(e); }
+            });
+        });
+    };
+ await DOMComplete();
  await nextIdle();
  (async()=>{
     await Promise.race([
