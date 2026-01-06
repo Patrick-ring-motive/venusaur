@@ -3,7 +3,7 @@
     navigator.serviceWorker.register(document.currentScript?.src ?? new Error().stack.match(/(https?:\/\/[^)\s]+)/)[1].replace(/:\d+(:\d+)?$/, ''));
 })();
 (() => {
-    const blocks = ["adthrive","doubleclick","gumgum","raptive"];
+    const blocks = ["adthrive","doubleclick","gumgum","raptive","googlesyndication"];
     if (typeof Window !== 'undefined') return;
     const CACHE_NAME = 'app-cache-v1';
     self.addEventListener('install', event => self.skipWaiting());
