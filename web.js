@@ -142,7 +142,7 @@
             }
 
             nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
-            console.log(nodes);
+            //console.log(nodes);
             for (const node of nodes) {
                 const textIn = node.textContent;
                 const textOut = await (fixText(node.textContent));
