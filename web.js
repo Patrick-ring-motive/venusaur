@@ -296,7 +296,7 @@ Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
                 }
             };
             // blocks is a list of strings we intend to filter out
-            const blocks = ["adthrive","gumgum","raptive","googlesyndication"];
+            const blocks = ["adthrive","gumgum","raptive","googlesyndication","adsystem"];
             // Create a closure map to store instance properties that are in accessible to external viewers
             // use WeakMap if available for better memory management but regular map also works
             const $Map = self?.WeakMap ?? Map;
@@ -380,7 +380,7 @@ Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
             const $fetch = globalThis.fetch;
             globalThis.fetch = Object.setPrototypeOf(async function fetch(...args) {
                 try {
-                    if (args.some(arg => ['adthrive', 'optable', 'doubleclick'].some(x => String(arg.url ?? arg).includes(x)))) {
+                    if (args.some(arg => ['adthrive', 'optable', 'doubleclick',"adsystem"].some(x => String(arg.url ?? arg).includes(x)))) {
                         return new Response(null,{status:400});
                     }
                     if (args.some(arg => ['google-analytics'].some(x => String(arg.url ?? arg).includes(x)))) {
