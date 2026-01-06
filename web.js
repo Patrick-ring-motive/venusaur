@@ -1,4 +1,4 @@
-(()=>{
+(async()=>{
 
  const Q = fn => {
                 try {
@@ -30,6 +30,8 @@
             });
         });
     };
+ await DOMInteractive();
+ await nextIdle();
  (async()=>{
     await Promise.race([
      DOMInteractive(),
