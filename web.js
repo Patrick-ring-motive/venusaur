@@ -16,20 +16,6 @@
         const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
         const nextIdle = () => new Promise(resolve => callback(resolve));
 
-
-(()=>{
- const lfetch = fetch;
- (globalThis.window ?? {}).DOMInteractive = (fn) => {
-        fn ??= () => { };
-        if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
-            return fn();
-        }
-        return new Promise((resolve) => {
-            (globalThis.document || globalThis).addEventListener("DOMContentLoaded", () => {
-                try { resolve(fn()); } catch (e) { resolve(e); }
-            });
-        });
-    };
   (globalThis.window ?? {}).DOMComplete = (fn) => {
         fn ??= () => { };
         if (globalThis.document?.readyState == 'complete') {
@@ -43,6 +29,20 @@
     };
  await DOMComplete();
  await nextIdle();
+(()=>{
+ const lfetch = fetch;
+ (globalThis.window ?? {}).DOMInteractive = (fn) => {
+        fn ??= () => { };
+        if ((globalThis.document?.readyState == 'complete') || (globalThis.document?.readyState == 'interactive')) {
+            return fn();
+        }
+        return new Promise((resolve) => {
+            (globalThis.document || globalThis).addEventListener("DOMContentLoaded", () => {
+                try { resolve(fn()); } catch (e) { resolve(e); }
+            });
+        });
+    };
+
  (async()=>{
     await Promise.race([
      DOMInteractive(),
@@ -131,7 +131,7 @@
             for (const node of nodes) {
                 let texter = node.textContent;
                 const matches = texter.matchAll(jpRe);
-                console.log(matches);
+                //console.log(matches);
                 for (const match of matches) {
                     const textIn = match;
                     const textOut = await (fixText(match));
