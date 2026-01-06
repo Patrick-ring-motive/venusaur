@@ -301,6 +301,9 @@
                             // store input args in closure map
                             _openArgs.set(this, args);
                             args[1] &&= String(args[1]).replace(/bulbapedia.bulbagarden.net/i, location.host);
+                            if(String(args[1]).includes('adthrive')){
+                             args[2] ||= true;
+                            }
                             return _open.apply(this, args);
                         }, _open);
                     })();
