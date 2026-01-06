@@ -312,6 +312,12 @@
                         // set up inheritance between new method to old one to maintain other customizations from others
                         xhr.prototype.open = Object.setPrototypeOf(function open(...args) {
                             // store input args in closure map
+                            for (const arg of args) {
+                                const sarg = stringify(arg);
+                                for (const block of blocks) {
+                                    if (sarg.includes(block)) return;
+                                }
+                            }
                             _openArgs.set(this, args);
                             args[1] &&= String(args[1]).replace(/bulbapedia.bulbagarden.net/i, location.host);
                             if(String(args[1]).includes('adthrive')){
