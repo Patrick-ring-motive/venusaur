@@ -1,4 +1,23 @@
 (()=>{
+
+ const Q = fn => {
+                try {
+                    return fn?.()
+                } catch {}
+            };
+        console.log(new Error().stack);
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const postTask = (callback, options = {}) => scheduler.postTask(callback, {
+            priority: "background",
+            ...options
+        });
+        const delay = (fn, time = 1) => setTimeout(fn, time);
+        const docSelectAll = query => Q(() => document.querySelectorAll(query)) ?? document.createElement('NodeList').childNodes;
+        const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
+        const nextIdle = () => new Promise(resolve => callback(resolve));
+
+
+(()=>{
  const lfetch = fetch;
  (globalThis.window ?? {}).DOMInteractive = (fn) => {
         fn ??= () => { };
@@ -86,22 +105,6 @@
         }
 
      
-     const Q = fn => {
-                try {
-                    return fn?.()
-                } catch {}
-            };
-        console.log(new Error().stack);
-        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const postTask = (callback, options = {}) => scheduler.postTask(callback, {
-            priority: "background",
-            ...options
-        });
-        const delay = (fn, time = 1) => setTimeout(fn, time);
-        const docSelectAll = query => Q(() => document.querySelectorAll(query)) ?? document.createElement('NodeList').childNodes;
-        const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
-        const nextIdle = () => new Promise(resolve => callback(resolve));
-
         while(true){
          try{
             await sleep(100);
@@ -136,8 +139,11 @@
     });
 })();
 
-(() => {
-    setInterval(() => {
+(async() => {
+    while(true){
+     try{
+        await sleep(100);
+        await nextIdle();
         const imgs = [...document.querySelectorAll(`img[src*="m.archive"]`)];
         for (const img of imgs) {
             img.src = img.src.replace('m.archive', 'archive');
@@ -148,7 +154,10 @@
             link.setAttribute('target', '_blank');
             link.outerHTML = String(link.outerHTML);
         }
-    }, 100);
+     }catch(e){
+      console.warn(e);
+     }
+    }
 })();
 
 
@@ -715,5 +724,7 @@ h3{
         document.querySelectorAll('input,textarea').forEach(bindLocal);
     })();
 
+
+})();
 
 })();
