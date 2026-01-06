@@ -52,7 +52,7 @@ video,
 [class*="adthrive-auto-injected"i],
 [id*="AdThrive_Content"i],
 .mw-broken-media{
-		display:none !important;
+	--display:none !important;
 	visibility:hidden !important;
 	content-visibility: hidden !important;
 	opacity: 0 !important;
