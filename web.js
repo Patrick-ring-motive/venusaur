@@ -94,7 +94,7 @@
             }else{
              delete langCache[text];
             }
-            return out ?? text;
+            return out || text;
         }
         
         function textNodesUnder(el) {
