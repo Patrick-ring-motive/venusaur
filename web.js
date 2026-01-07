@@ -151,7 +151,10 @@
             for (const node of nodes) {
              gather.push((async()=>{
                 const textIn = node.textContent;
-                const textOut = await (fixText(node.textContent));
+                let textOut = await (fixText(node.textContent));
+                if(Array.isArray(textOut)){
+                 textOut = textOut.join('');
+                }
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
              })());
