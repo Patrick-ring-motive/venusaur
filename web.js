@@ -137,11 +137,16 @@
                 const matches = texter.matchAll(jpRe);
                 //console.log(matches);
                 for (const match of matches) {
-                    const textIn = match;
+                    let textIn = match;
+                    if(Array.isArray(textIn)){
+                      textIn = textIn.join('');
+                    }
+                    textIn = textIn.trim();
                     let textOut = await (fixText(match));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
                     }
+                    textOut = textOut.trim();
                     texter = texter.replace(textIn, textOut);
                     console.log({ textIn }, { textOut });
                 }
@@ -154,11 +159,16 @@
             //console.log(nodes);
             for (const node of nodes) {
              gather.push((async()=>{
-                const textIn = node.textContent;
+                let textIn = node.textContent;
+                if(Array.isArray(textIn)){
+                  textIn = textIn.join('');
+                }
+                textIn = textIn.trim();
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
                 }
+                textOut = textOut.trim();
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
              })());
@@ -168,11 +178,16 @@
           const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
            gather.push((async()=>{
-                const textIn = node.textContent;
+                let textIn = node.textContent;
+                if(Array.isArray(textIn)){
+                  textIn = textIn.join('');
+                }
+                textIn = textIn.trim();
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
                 }
+                textOut = textOut.trim();
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
                 node.setAttribute('translated','true');
