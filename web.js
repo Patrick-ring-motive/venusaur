@@ -29,7 +29,7 @@
             });
         });
     };
- await DOMComplete();
+// await DOMComplete();
  await nextIdle();
     Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
  [...document.querySelectorAll('iframe,frame,object,embed,[src*="adthrive"]')].map(x=>x.remove());
