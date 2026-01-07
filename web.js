@@ -151,7 +151,7 @@
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
             }
-          const elements = [...document.querySelectorAll(':is(td,i,b,a):not([translated])')].filter(x=>!x.childElementCount);
+          const elements = [...document.querySelectorAll(':not([translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
            const textIn = node.textContent;
                 const textOut = await (fixText(node.textContent));
