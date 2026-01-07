@@ -84,7 +84,7 @@
                 body: encodeURIComponent(stringify(payload))
             }));
             const out = await langCache[text];
-            if (out?.trim?.() && (out?.trim?.() !== '#ERROR!')) {
+            if (out?.trim?.() && (out?.trim?.() !== '#ERROR!') && out != text) {
                 localStorage.setItem(text, out);
             }else{
              delete langCache[text];
