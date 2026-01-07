@@ -83,7 +83,10 @@
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
             }));
-            const out = await langCache[text];
+            let out;
+            try{
+             out = JSON.parse(await langCache[text]).textOut;
+            }
             if (out?.trim?.() && (out?.trim?.() !== '#ERROR!') && out != text) {
                 localStorage.setItem(text, out);
             }else{
