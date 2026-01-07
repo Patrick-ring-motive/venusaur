@@ -77,8 +77,8 @@
             if (localStorage.getItem(text)) return localStorage.getItem(text);
             if(langCache[text])return langCache[text];
             const payload = { text };
-            payload.pass = 'one-way';
-            payload.lang = 'detect';
+            payload.sourceLang = 'detect';
+            payload.targetLang = 'en';
             langCache[text] = (fetchText(`${url}`, {
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
@@ -86,6 +86,8 @@
             let out;
             try{
              out = JSON.parse(await langCache[text]).textOut;
+            }catch(e){
+             console.warn(e);
             }
             if (out?.trim?.() && (out?.trim?.() !== '#ERROR!') && out != text) {
                 localStorage.setItem(text, out);
