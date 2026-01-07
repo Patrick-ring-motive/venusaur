@@ -137,7 +137,10 @@
                 //console.log(matches);
                 for (const match of matches) {
                     const textIn = match;
-                    const textOut = await (fixText(match));
+                    let textOut = await (fixText(match));
+                    if(Array.isArray(textOut)){
+                      textOut = textOut.join('');
+                    }
                     texter = texter.replace(textIn, textOut);
                     console.log({ textIn }, { textOut });
                 }
@@ -165,7 +168,10 @@
           for(const node of elements){
            gather.push((async()=>{
                 const textIn = node.textContent;
-                const textOut = await (fixText(node.textContent));
+                let textOut = await (fixText(node.textContent));
+                if(Array.isArray(textOut)){
+                 textOut = textOut.join('');
+                }
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
                 node.setAttribute('translated','true');
