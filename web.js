@@ -77,6 +77,7 @@
            if(!text?.trim?.()){
             return text;
            }
+            text = text.trim();
             let out;
             try{
             if (localStorage.getItem(text)) return localStorage.getItem(text);
