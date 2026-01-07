@@ -16,13 +16,18 @@
         if (globalThis.document?.readyState == 'complete') {
             return fn();
         }
+        let resolved;
         return new Promise((resolve) => {
-            window.addEventListener("load", () => {
-                try { resolve(fn()); } catch (e) { resolve(e); }
-            });
+            for(const target of [window,document]){
+               target.addEventListener("load", () => {
+                  if(resolved)return;
+                  try { resolve(fn()); } catch (e) { resolve(e); }
+                  resolved = true;
+               });
+            }
         });
     };
-// await DOMComplete();
+ await DOMComplete();
  await nextIdle();
     Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
  [...document.querySelectorAll('iframe,frame,object,embed,[src*="adthrive"]')].map(x=>x.remove());
