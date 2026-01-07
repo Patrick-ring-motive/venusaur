@@ -74,6 +74,9 @@
 
          const langCache = {};
         async function fixText(text) {
+           if(!text?.trim?.()){
+            return text;
+           }
             let out;
             try{
             if (localStorage.getItem(text)) return localStorage.getItem(text);
