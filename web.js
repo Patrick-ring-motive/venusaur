@@ -125,12 +125,13 @@
 
 
         while(true){
+         let gather = [];
          try{
             await sleep(100);
             await nextIdle();
             let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
-
             for (const node of nodes) {
+               gather.push((async()=>{
                 let texter = node.textContent;
                 const matches = texter.matchAll(jpRe);
                 //console.log(matches);
@@ -141,26 +142,36 @@
                     console.log({ textIn }, { textOut });
                 }
                 node.textContent = texter;
+                })());
             }
-
+            await Promise.allSettled(gather);
+            gather = [];
             nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
             //console.log(nodes);
             for (const node of nodes) {
+             gather.push((async()=>{
                 const textIn = node.textContent;
                 const textOut = await (fixText(node.textContent));
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
+             })());
             }
+          await Promise.allSettled(gather);
+          gather = [];
           const elements = [...document.querySelectorAll(':not([translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
-           const textIn = node.textContent;
+           gather.push((async()=>{
+                const textIn = node.textContent;
                 const textOut = await (fixText(node.textContent));
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
                 node.setAttribute('translated','true');
+           })());
           }
         }catch(e){
           console.warn(e);
+        }finally{
+          await Promise.allSettled(gather);
         }
        }
     })();
