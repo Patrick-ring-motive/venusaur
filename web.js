@@ -80,7 +80,7 @@
             let out;
             try{
             if (localStorage.getItem(text)) return localStorage.getItem(text);
-            if(langCache[text])return JSON.parse(langCache[text]).textOutput;
+            if(langCache[text])return JSON.parse(await langCache[text]).textOut;
             const payload = { text };
             payload.sourceLang = 'detect';
             payload.targetLang = 'en';
