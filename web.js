@@ -8,14 +8,7 @@
             };
         console.log(new Error().stack);
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const postTask = (callback, options = {}) => scheduler.postTask(callback, {
-            priority: "background",
-            ...options
-        });
-        const delay = (fn, time = 1) => setTimeout(fn, time);
-        const docSelectAll = query => Q(() => document.querySelectorAll(query)) ?? document.createElement('NodeList').childNodes;
-        const callback = Q(() => requestIdleCallback) ?? Q(() => scheduler)?.postTask ? postTask : Q(() => requestAnimationFrame) ?? delay;
-    globalThis.requestIdleCallback ??= requestAnimationFrame;
+        globalThis.requestIdleCallback ??= requestAnimationFrame;
         const nextIdle = () => new Promise(resolve => requestIdleCallback(resolve));
 
   (globalThis.window ?? {}).DOMComplete = (fn) => {
@@ -153,6 +146,14 @@
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
             }
+          const elements = [...document.querySelectorAll(':is(td,i,b):not([translated])')].filter(x=>!x.childElementCount);
+          for(const node of elements){
+           const textIn = node.textContent;
+                const textOut = await (fixText(node.textContent));
+                node.textContent = ` ${textOut} `;
+                console.log({ textIn }, { textOut });
+                node.setAttribute('translated','true');
+          }
         }catch(e){
           console.warn(e);
         }
