@@ -119,7 +119,7 @@
          try{
             await sleep(100);
             await nextIdle();
-            let nodes = textNodesUnder(document.body).filter(x => containsEnglishAndJapanese(x?.textContent));
+            let nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
                gather.push((async()=>{
                 let texter = node.textContent;
@@ -136,7 +136,7 @@
             }
             await Promise.allSettled(gather);
             gather = [];
-            nodes = textNodesUnder(document.body).filter(x => containsJapanese(x?.textContent));
+            nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             //console.log(nodes);
             for (const node of nodes) {
              gather.push((async()=>{
@@ -148,7 +148,7 @@
             }
           await Promise.allSettled(gather);
           gather = [];
-          const elements = [...document.querySelectorAll(':not([translated])')].filter(x=>!x.childElementCount);
+          const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
            gather.push((async()=>{
                 const textIn = node.textContent;
