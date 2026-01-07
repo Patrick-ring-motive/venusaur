@@ -90,7 +90,7 @@
             }));
              responsePayload = JSON.parse(await langCache[text]);
              out = responsePayload.textOut;
-             console.log({text},{responsePayload});
+             //console.log({text},{responsePayload});
             }catch(e){
              console.warn(e);
             }
