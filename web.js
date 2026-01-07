@@ -84,24 +84,14 @@
                 body: encodeURIComponent(stringify(payload))
             }));
             const out = await langCache[text];
-            if (out) {
+            if (out?.trim?.() && (out?.trim?.() !== '#ERROR!')) {
                 localStorage.setItem(text, out);
+            }else{
+             delete langCache[text];
             }
             return out;
         }
-        async function fixText2(text) {
-            if (localStorage.getItem(text)) return localStorage.getItem(text);
-            const payload = { text };
-            payload.lang = 'ja';
-            const out = await (fetchText(`${url}`, {
-                method: "POST",
-                body: encodeURIComponent(stringify(payload))
-            }));
-            if (out) {
-                localStorage.setItem(text, out);
-            }
-            return out;
-        }
+        
         function textNodesUnder(el) {
             const children = [];
             const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
