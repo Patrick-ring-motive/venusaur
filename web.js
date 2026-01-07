@@ -74,6 +74,8 @@
 
          const langCache = {};
         async function fixText(text) {
+            let out;
+            try{
             if (localStorage.getItem(text)) return localStorage.getItem(text);
             if(langCache[text])return langCache[text];
             const payload = { text };
@@ -83,8 +85,6 @@
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
             }));
-            let out;
-            try{
              out = JSON.parse(await langCache[text]).textOut;
             }catch(e){
              console.warn(e);
