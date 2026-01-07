@@ -67,7 +67,7 @@
         };
 
 
-        const url = 'https://script.google.com/macros/s/AKfycbz2FFx1dJgjRkQgsVQ10UHheMYPXeW_CkZluicAt-ndUJdn7nFLEdJvoBOZzEUE9BPm/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbyTMHP9Hrb3LzHqNz0meELpbkOBKFAjtg7E2KnGnDPPq-2MU0zcMpJtyZID018-2InF/exec';
 
 
         const fetchText = async (...args) => (await lfetch(...args)).text();
