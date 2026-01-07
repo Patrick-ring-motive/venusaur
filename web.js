@@ -85,7 +85,9 @@
                 method: "POST",
                 body: encodeURIComponent(stringify(payload))
             }));
-             out = JSON.parse(await langCache[text]).textOut;
+             responsePayload = JSON.parse(await langCache[text]);
+             out = responsePayload.textOut;
+             console.log({text},{responsePayload});
             }catch(e){
              console.warn(e);
             }
