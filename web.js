@@ -142,7 +142,7 @@
                       textIn = textIn.join('');
                     }
                     textIn = textIn.trim();
-                    if(!textIn){continue;}
+                    if(!textIn){return;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -165,7 +165,7 @@
                   textIn = textIn.join('');
                 }
                 textIn = textIn.trim();
-                if(!textIn){continue;}
+                if(!textIn){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
@@ -185,7 +185,7 @@
                   textIn = textIn.join('');
                 }
                 textIn = textIn.trim();
-                if(!textIn){continue;}
+                if(!textIn){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
