@@ -155,7 +155,7 @@
                 })());
             }
             await Promise.allSettled(gather);
-            console.warn('text nodes batch1');
+            //console.warn('text nodes batch1');
             gather = [];
             nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             //console.log(nodes);
@@ -177,7 +177,7 @@
              })());
             }
           await Promise.allSettled(gather);
-          console.warn('text nodes batch2');
+          //console.warn('text nodes batch2');
           gather = [];
           const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
@@ -202,7 +202,7 @@
           console.warn(e);
         }finally{
           await Promise.allSettled(gather);
-          console.warn('text nodes batch3');
+         // console.warn('text nodes batch3');
         }
        }
     })();
