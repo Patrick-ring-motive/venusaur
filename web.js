@@ -179,7 +179,7 @@
           await Promise.allSettled(gather);
           //console.warn('text nodes batch2');
           gather = [];
-          const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
+          let elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
                gather.push((async()=>{
                 let texter = node.textContent;
@@ -206,7 +206,7 @@
 
          await Promise.allSettled(gather);
            gather = [];
-            const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
+             elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
             //console.log(nodes);
             for (const node of elements) {
              gather.push((async()=>{
