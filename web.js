@@ -203,6 +203,28 @@
                 if(node.textContent != texter)node.textContent = texter;
                 })());
           }
+
+         await Promise.allSettled(gather);
+           gather = [];
+            const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
+            //console.log(nodes);
+            for (const node of elements) {
+             gather.push((async()=>{
+                let textIn = node.textContent;
+                if(Array.isArray(textIn)){
+                  textIn = textIn.join('');
+                }
+                textIn = textIn.trim();
+                if(!textIn){return;}
+                let textOut = await (fixText(node.textContent));
+                if(Array.isArray(textOut)){
+                 textOut = textOut.join('');
+                }
+                textOut = textOut.trim();
+                node.textContent = ` ${textOut} `;
+                console.log({ textIn }, { textOut });
+             })());
+            }
         }catch(e){
           console.warn(e);
         }finally{
