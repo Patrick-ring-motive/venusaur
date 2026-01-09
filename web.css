@@ -39,7 +39,7 @@ h2[expand="false"] .mf-icon{
 	transform: unset !important;
 }
 
-h1,h2,h3,h4,h5,h6,th,thead,header{
+td,h1,h2,h3,h4,h5,h6,th,thead,header{
 	text-transform: capitalize !important;
 }
 
