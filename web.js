@@ -27,6 +27,7 @@
             }
         });
     };
+// const {franc} = await import('https://cdn.jsdelivr.net/npm/franc-min@6.2.0/index.min.js');
  await Promise.race([DOMComplete(),sleep(3000)]);
  await nextIdle();
     Object.defineProperty(HTMLIFrameElement.prototype,'src',{set(){}});
