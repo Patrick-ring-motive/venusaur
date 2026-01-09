@@ -130,7 +130,7 @@
          try{
             await sleep(100);
             await nextIdle();
-            let nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
+            let nodes = textNodesUnder(document.body).filter(x => (containsEnglishAndJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
                gather.push((async()=>{
                 let texter = node.textContent;
@@ -142,7 +142,7 @@
                       textIn = textIn.join('');
                     }
                     textIn = textIn.trim();
-                    if(!textIn){return;}
+                    if(!textIn){continue;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -155,6 +155,7 @@
                 })());
             }
             await Promise.allSettled(gather);
+            console.warn('text nodes batch1');
             gather = [];
             nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             //console.log(nodes);
@@ -176,6 +177,7 @@
              })());
             }
           await Promise.allSettled(gather);
+          console.warn('text nodes batch2');
           gather = [];
           const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
@@ -200,6 +202,7 @@
           console.warn(e);
         }finally{
           await Promise.allSettled(gather);
+          console.warn('text nodes batch3');
         }
        }
     })();
