@@ -130,7 +130,7 @@
          try{
             await sleep(100);
             await nextIdle();
-            let nodes = textNodesUnder(document.body).filter(x => (containsEnglishAndJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
+            let nodes = textNodesUnder(document.body).filter(x => ((x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
                gather.push((async()=>{
                 let texter = node.textContent;
@@ -151,7 +151,7 @@
                     texter = texter.replace(textIn, textOut);
                     console.log({ textIn }, { textOut });
                 }
-                node.textContent = texter;
+                if(node.textContent != texter)node.textContent = texter;
                 })());
             }
             await Promise.allSettled(gather);
@@ -181,22 +181,27 @@
           gather = [];
           const elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
           for(const node of elements){
-           gather.push((async()=>{
-                let textIn = node.textContent;
-                if(Array.isArray(textIn)){
-                  textIn = textIn.join('');
+               gather.push((async()=>{
+                let texter = node.textContent;
+                const matches = texter.matchAll(jpRe);
+                //console.log(matches);
+                for (const match of matches) {
+                    let textIn = match;
+                    if(Array.isArray(textIn)){
+                      textIn = textIn.join('');
+                    }
+                    textIn = textIn.trim();
+                    if(!textIn){continue;}
+                    let textOut = await (fixText(text));
+                    if(Array.isArray(textOut)){
+                      textOut = textOut.join('');
+                    }
+                    textOut = textOut.trim();
+                    texter = texter.replace(textIn, textOut);
+                    console.log({ textIn }, { textOut });
                 }
-                textIn = textIn.trim();
-                if(!textIn){return;}
-                let textOut = await (fixText(node.textContent));
-                if(Array.isArray(textOut)){
-                 textOut = textOut.join('');
-                }
-                textOut = textOut.trim();
-                node.textContent = ` ${textOut} `;
-                console.log({ textIn }, { textOut });
-                node.setAttribute('translated','true');
-           })());
+                if(node.textContent != texter)node.textContent = texter;
+                })());
           }
         }catch(e){
           console.warn(e);
