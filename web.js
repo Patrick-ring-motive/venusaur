@@ -44,6 +44,25 @@
             });
         });
     };
+ 
+async function runInBatches(promises, batchSize) {
+  const results = new Array(promises.length);
+  for (let i = 0; i < promises.length; i += batchSize) {
+    const chunk = promises.slice(i, i + batchSize).map(x=>x());
+    const chunkResults = await Promise.allSettled(chunk);
+    // Preserve order and rethrow on rejection if you prefer
+    chunkResults.forEach((res, idx) => {
+      const targetIndex = i + idx;
+      if (res.status === 'fulfilled') {
+        results[targetIndex] = res.value;
+      } else {
+        // Change to: throw res.reason; if you want to fail-fast for rejections
+        results[targetIndex] = res.reason; // store error; caller can inspect
+      }
+    });
+  }
+  return results;
+}
 
  (async()=>{
     await Promise.race([
@@ -152,9 +171,9 @@
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
-                })());
+                }));
             }
-            await Promise.allSettled(gather);
+            await runInBatches(gather,5);
             //console.warn('text nodes batch1');
             gather = [];
             nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
@@ -174,9 +193,9 @@
                 textOut = textOut.trim();
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
-             })());
+             }));
             }
-          await Promise.allSettled(gather);
+          await runInBatches(gather,5);
           //console.warn('text nodes batch2');
           gather = [];
           let elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
@@ -201,10 +220,10 @@
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
-                })());
+                }));
           }
 
-         await Promise.allSettled(gather);
+         await runInBatches(gather,5);
            gather = [];
              elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
             //console.log(nodes);
@@ -223,12 +242,12 @@
                 textOut = textOut.trim();
                 node.textContent = ` ${textOut} `;
                 console.log({ textIn }, { textOut });
-             })());
+             }));
             }
         }catch(e){
           console.warn(e);
         }finally{
-          await Promise.allSettled(gather);
+          await runInBatches(gather,5);
          // console.warn('text nodes batch3');
         }
        }
