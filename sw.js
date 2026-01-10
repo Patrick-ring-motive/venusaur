@@ -52,7 +52,7 @@
         }
         const fetchEvent = ((async () => {
             try {
-                if(blocks.some(x=>event.request.url.includes(x)){
+                if(blocks.some(x=>event.request.url.includes(x))){
                     return new Response(null,{status:400,statusText:'cheese'});
                 }
                 let responded = false;
