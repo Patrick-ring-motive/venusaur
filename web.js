@@ -170,7 +170,7 @@ async function runInBatches(promises, batchSize) {
                       textOut = textOut.join('');
                     }
                     textOut = textOut.trim();
-                    texter = texter.replace(textIn, textOut);
+                    texter = texter.replaceAll(textIn, textOut);
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
@@ -221,7 +221,7 @@ async function runInBatches(promises, batchSize) {
                       textOut = textOut.join('');
                     }
                     textOut = textOut.trim();
-                    texter = texter.replace(textIn, textOut);
+                    texter = texter.replaceAll(textIn, textOut);
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
