@@ -87,7 +87,7 @@ async function runInBatches(promises, batchSize) {
         };
 
 
-        const url = 'https://script.google.com/macros/s/AKfycby3_RBPOYbadwGO_Ti5RQD5mrrNF2sdUzmvmYsuP2sL6r3GBoi_ZAZu6_EDv0Tr3xT1/exec';
+        const url = 'https://script.google.com/macros/s/AKfycbzIyyapTah5Vx68prqd53HLTc9f4M6IHPE-08cfGYIFOYbX5Mum4BaU7OUvjHJ66K8v/exec';
 
 
         const fetchText = async (...args) => (await lfetch(...args)).text();
