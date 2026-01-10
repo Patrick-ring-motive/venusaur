@@ -87,7 +87,7 @@ async function runInBatches(promises, batchSize) {
         };
 
 
-        const url = 'https://script.google.com/macros/s/AKfycbzIyyapTah5Vx68prqd53HLTc9f4M6IHPE-08cfGYIFOYbX5Mum4BaU7OUvjHJ66K8v/exec';
+        const url = 'https://script.google.com/macros/s/AKfycby3_RBPOYbadwGO_Ti5RQD5mrrNF2sdUzmvmYsuP2sL6r3GBoi_ZAZu6_EDv0Tr3xT1/exec';
 
 
         const fetchText = async (...args) => (await lfetch(...args)).text();
@@ -144,6 +144,7 @@ async function runInBatches(promises, batchSize) {
             return englishRegex.test(text) && japaneseRegex.test(text);
         }
 
+       const removeMarks = x =>x.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
         while(true){
          let gather = [];
@@ -162,7 +163,9 @@ async function runInBatches(promises, batchSize) {
                     if(Array.isArray(textIn)){
                       textIn = textIn.join('');
                     }
-                    textIn = textIn.trim().toLowerCase();
+                    textIn = textIn.trim();
+                    const norm = removeMarks(textIn);
+                    if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
                     if(!textIn){continue;}
                     if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
@@ -187,7 +190,9 @@ async function runInBatches(promises, batchSize) {
                 if(Array.isArray(textIn)){
                   textIn = textIn.join('');
                 }
-                textIn = textIn.trim().toLowerCase();
+                textIn = textIn.trim();
+                const norm = removeMarks(textIn);
+                if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
                 if(!textIn){return;}
                 if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
@@ -213,7 +218,9 @@ async function runInBatches(promises, batchSize) {
                     if(Array.isArray(textIn)){
                       textIn = textIn.join('');
                     }
-                    textIn = textIn.trim().toLowerCase();
+                    textIn = textIn.trim();
+                    const norm = removeMarks(textIn);
+                    if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
                     if(!textIn){continue;}
                     if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
@@ -238,7 +245,9 @@ async function runInBatches(promises, batchSize) {
                 if(Array.isArray(textIn)){
                   textIn = textIn.join('');
                 }
-                textIn = textIn.trim().toLowerCase();
+                textIn = textIn.trim();
+                const norm = removeMarks(textIn);
+                if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
                 if(!textIn){return;}
                 if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
