@@ -162,7 +162,7 @@ async function runInBatches(promises, batchSize) {
                     if(Array.isArray(textIn)){
                       textIn = textIn.join('');
                     }
-                    textIn = textIn.trim();
+                    textIn = textIn.trim().toLowerCase();
                     if(!textIn){continue;}
                     if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
@@ -170,7 +170,7 @@ async function runInBatches(promises, batchSize) {
                       textOut = textOut.join('');
                     }
                     textOut = textOut.trim();
-                    texter = texter.replaceAll(textIn, textOut);
+                    texter = texter.replaceAll(match, textOut);
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
@@ -187,7 +187,7 @@ async function runInBatches(promises, batchSize) {
                 if(Array.isArray(textIn)){
                   textIn = textIn.join('');
                 }
-                textIn = textIn.trim();
+                textIn = textIn.trim().toLowerCase();
                 if(!textIn){return;}
                 if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
@@ -213,7 +213,7 @@ async function runInBatches(promises, batchSize) {
                     if(Array.isArray(textIn)){
                       textIn = textIn.join('');
                     }
-                    textIn = textIn.trim();
+                    textIn = textIn.trim().toLowerCase();
                     if(!textIn){continue;}
                     if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
@@ -221,7 +221,7 @@ async function runInBatches(promises, batchSize) {
                       textOut = textOut.join('');
                     }
                     textOut = textOut.trim();
-                    texter = texter.replaceAll(textIn, textOut);
+                    texter = texter.replaceAll(match, textOut);
                     console.log({ textIn }, { textOut });
                 }
                 if(node.textContent != texter)node.textContent = texter;
@@ -238,7 +238,7 @@ async function runInBatches(promises, batchSize) {
                 if(Array.isArray(textIn)){
                   textIn = textIn.join('');
                 }
-                textIn = textIn.trim();
+                textIn = textIn.trim().toLowerCase();
                 if(!textIn){return;}
                 if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
