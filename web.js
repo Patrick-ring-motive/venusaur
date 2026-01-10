@@ -148,6 +148,7 @@ async function runInBatches(promises, batchSize) {
         while(true){
          let gather = [];
          try{
+          const {franc, francAll} = await import('https://esm.sh/franc')
             await sleep(100);
             await nextIdle();
             let nodes = textNodesUnder(document.body).filter(x => ((x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
@@ -163,6 +164,7 @@ async function runInBatches(promises, batchSize) {
                     }
                     textIn = textIn.trim();
                     if(!textIn){continue;}
+                    if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -187,6 +189,7 @@ async function runInBatches(promises, batchSize) {
                 }
                 textIn = textIn.trim();
                 if(!textIn){return;}
+                if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
@@ -212,6 +215,7 @@ async function runInBatches(promises, batchSize) {
                     }
                     textIn = textIn.trim();
                     if(!textIn){continue;}
+                    if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -236,6 +240,7 @@ async function runInBatches(promises, batchSize) {
                 }
                 textIn = textIn.trim();
                 if(!textIn){return;}
+                if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
