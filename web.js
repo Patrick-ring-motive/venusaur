@@ -47,22 +47,10 @@
     };
  
 async function runInBatches(promises, batchSize) {
-  const results = new Array(promises.length);
-  for (let i = 0; i < promises.length; i += batchSize) {
+  for (let i = 0; i < promises.length; i += batchSize) {try{
     const chunk = promises.slice(i, i + batchSize).map(x=>x());
-    const chunkResults = await Promise.allSettled(chunk);
-    // Preserve order and rethrow on rejection if you prefer
-    chunkResults.forEach((res, idx) => {
-      const targetIndex = i + idx;
-      if (res.status === 'fulfilled') {
-        results[targetIndex] = res.value;
-      } else {
-        // Change to: throw res.reason; if you want to fail-fast for rejections
-        results[targetIndex] = res.reason; // store error; caller can inspect
-      }
-    });
-  }
-  return results;
+    const chunkResults = await Promise.race(chunk);
+  }catch{}}
 }
 
  (async()=>{
