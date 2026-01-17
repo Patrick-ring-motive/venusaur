@@ -140,7 +140,7 @@ async function runInBatches(promises, batchSize) {
           const {franc, francAll} = await import('https://esm.sh/franc')
             await sleep(100);
             await nextIdle();
-            let nodes = textNodesUnder(document.body).filter(x => ((x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
+            let nodes = textNodesUnder(document.body).filter(x => (jpRe.test(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
               let texter = node.textContent;
               if(!jpRe.test(texter))continue;
