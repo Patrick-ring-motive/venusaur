@@ -143,10 +143,10 @@ async function runInBatches(promises, batchSize) {
             let nodes = textNodesUnder(document.body).filter(x => ((x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
               let texter = node.textContent;
-              if(!containsEnglishAndJapanese(texter))continue;
+              if(!jpRe.test(texter))continue;
                gather.push((async()=>{
                 let texter = node.textContent;
-                if(!containsEnglishAndJapanese(texter))return;
+                if(!jpRe.test(texter))return;
                 const matches = texter.matchAll(jpRe);
                 //console.log(matches);
                 for (const match of matches) {
@@ -173,7 +173,7 @@ async function runInBatches(promises, batchSize) {
             await runInBatches(gather,5);
             //console.warn('text nodes batch1');
             gather = [];
-            nodes = textNodesUnder(document.body).filter(x => (containsJapanese(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
+            nodes = textNodesUnder(document.body).filter(x => (jpRr.test(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             //console.log(nodes);
             for (const node of nodes) {
              gather.push((async()=>{
@@ -213,7 +213,7 @@ async function runInBatches(promises, batchSize) {
                     const norm = removeMarks(textIn);
                     //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
                     if(!textIn){continue;}
-                    if(franc(textIn) == 'eng'){continue;}
+                    //if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -238,7 +238,7 @@ async function runInBatches(promises, batchSize) {
                 }
                 textIn = textIn.trim();
                 const norm = removeMarks(textIn);
-                if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
+                //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
                 if(!textIn){return;}
                 if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
