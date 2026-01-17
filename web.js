@@ -156,7 +156,7 @@ async function runInBatches(promises, batchSize) {
                     }
                     textIn = textIn.trim();
                     const norm = removeMarks(textIn);
-                    if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
+                    //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
                     if(!textIn){continue;}
                     if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
