@@ -158,7 +158,7 @@ async function runInBatches(promises, batchSize) {
                     const norm = removeMarks(textIn);
                     //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){continue;}
                     if(!textIn){continue;}
-                    if(franc(textIn) == 'eng'){continue;}
+                    //if(franc(textIn) == 'eng'){continue;}
                     let textOut = await (fixText(text));
                     if(Array.isArray(textOut)){
                       textOut = textOut.join('');
@@ -185,7 +185,7 @@ async function runInBatches(promises, batchSize) {
                 const norm = removeMarks(textIn);
                 //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
                 if(!textIn){return;}
-                if(franc(textIn) == 'eng'){return;}
+                //if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
@@ -240,7 +240,7 @@ async function runInBatches(promises, batchSize) {
                 const norm = removeMarks(textIn);
                 //if((norm.length == [...norm].length)&&!/[a-z]/i.test(norm)){return;}
                 if(!textIn){return;}
-                if(franc(textIn) == 'eng'){return;}
+                //if(franc(textIn) == 'eng'){return;}
                 let textOut = await (fixText(node.textContent));
                 if(Array.isArray(textOut)){
                  textOut = textOut.join('');
