@@ -173,7 +173,7 @@ async function runInBatches(promises, batchSize) {
             await runInBatches(gather,5);
             //console.warn('text nodes batch1');
             gather = [];
-            nodes = textNodesUnder(document.body).filter(x => (jpRr.test(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
+            nodes = textNodesUnder(document.body).filter(x => (jpRe.test(x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             //console.log(nodes);
             for (const node of nodes) {
              gather.push((async()=>{
