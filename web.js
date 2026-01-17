@@ -142,8 +142,11 @@ async function runInBatches(promises, batchSize) {
             await nextIdle();
             let nodes = textNodesUnder(document.body).filter(x => ((x?.textContent)&&(!/^(script|style)$/i.test(x?.parentElement?.tagName))));
             for (const node of nodes) {
+              let texter = node.textContent;
+              if(!containsEnglishAndJapanese(texter))continue;
                gather.push((async()=>{
                 let texter = node.textContent;
+                if(!containsEnglishAndJapanese(texter))return;
                 const matches = texter.matchAll(jpRe);
                 //console.log(matches);
                 for (const match of matches) {
