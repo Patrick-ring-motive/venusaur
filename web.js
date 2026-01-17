@@ -198,7 +198,7 @@ async function runInBatches(promises, batchSize) {
           await runInBatches(gather,5);
           //console.warn('text nodes batch2');
           gather = [];
-          let elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>!x.childElementCount);
+          let elements = [...document.querySelectorAll(':not(script,style,[translated])')].filter(x=>jpRe.test(x.textContent)&&!x.childElementCount);
           for(const node of elements){
                gather.push((async()=>{
                 let texter = node.textContent;
