@@ -1,62 +1,71 @@
 html:not([location-host*="venu"]) counter,
-[id="siteNotice"]{
-	display:none !important;
-	visibility:hidden !important;
-	content-visibility: hidden !important;
-	opacity: 0 !important;
-	color: rgba(0,0,0,0) !important;
-	background-color: rgba(0,0,0,0) !important;
-	border-color: rgba(0,0,0,0) !important;
+[id="siteNotice"] {
+  display: none !important;
+  visibility: hidden !important;
+  content-visibility: hidden !important;
+  opacity: 0 !important;
+  color: rgba(0, 0, 0, 0) !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border-color: rgba(0, 0, 0, 0) !important;
 }
 
-*{
-	max-width:min(100vw,100%);
+* {
+  max-width: min(100vw, 100%);
 }
 
-img{
-	border-radius:1vmax;
+img {
+  border-radius: 1vmax;
 }
 
-h2[expand="true"] + section{
-	display: block !important;
-	visibility: visible !important;
-	content-visibility: visible !important;
-	opacity: 1 !important;
+h2[expand="true"]+section {
+  display: block !important;
+  visibility: visible !important;
+  content-visibility: visible !important;
+  opacity: 1 !important;
 }
 
-h2[expand="false"] + section{
-	display: none !important;
-	visibility: hidden !important;
-	content-visibility: hidden !important;
-	opacity: 0 !important;
+h2[expand="false"]+section {
+  display: none !important;
+  visibility: hidden !important;
+  content-visibility: hidden !important;
+  opacity: 0 !important;
 }
 
-h2[expand="true"] .mf-icon{
-	transform: scaleY(-1) !important;
+h2[expand="true"] .mf-icon {
+  transform: scaleY(-1) !important;
 }
 
-h2[expand="false"] .mf-icon{
-	transform: unset !important;
+h2[expand="false"] .mf-icon {
+  transform: unset !important;
 }
 
-td,h1,h2,h3,h4,h5,h6,th,thead,header{
-	text-transform: capitalize !important;
+td,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th,
+thead,
+header {
+  text-transform: capitalize !important;
 }
 
 iframe,
 video,
-[typeof*="error"i],
-[class*="adthrive-sticky-outstream"i],
-[class*="AdThrive_Footer"i],
-[id*="AdThrive_Footer"i],
-[class*="adthrive-auto-injected"i],
-[id*="AdThrive_Content"i],
-.mw-broken-media{
-	--display:none !important;
-	visibility:hidden !important;
-	content-visibility: hidden !important;
-	opacity: 0 !important;
-	color: rgba(0,0,0,0) !important;
-	background-color: rgba(0,0,0,0) !important;
-	border-color: rgba(0,0,0,0) !important;
+[typeof*="error" i],
+[class*="adthrive-sticky-outstream" i],
+[class*="AdThrive_Footer" i],
+[id*="AdThrive_Footer" i],
+[class*="adthrive-auto-injected" i],
+[id*="AdThrive_Content" i],
+.mw-broken-media {
+  --display: none !important;
+  visibility: hidden !important;
+  content-visibility: hidden !important;
+  opacity: 0 !important;
+  color: rgba(0, 0, 0, 0) !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border-color: rgba(0, 0, 0, 0) !important;
 }
